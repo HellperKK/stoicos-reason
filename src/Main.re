@@ -89,6 +89,9 @@ and to_token = chaine => switch(chaine){
     let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);
     Bloc(temp);
   };
+  |x when full_test([%bs.re "/:[A-Za-z]+/"], x) => {
+    Symbol(Utils.string_slice(1, String.length(x), x))
+  };
   |x => Nom(x);
 };
 
