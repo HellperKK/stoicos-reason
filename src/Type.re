@@ -104,6 +104,16 @@ let to_string = tok => switch(tok){
   |_ => ""
 };
 
+let to_sym = tok => switch(tok){
+  |Entier(x) => string_of_int(x);
+  |Flottant(x) => string_of_float(x);
+  |Carac(x) => String.make(1, x);
+  |Chaine(x) => x;
+  |Symbol(x) => x;
+  |Booleen(x) => string_of_bool(x);
+  |_ => ""
+};
+
 let to_bool = tok => switch(tok){
   |Booleen(x) => x;
   |Unit => false;
