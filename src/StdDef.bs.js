@@ -175,6 +175,8 @@ var run = Type$ReactTemplate.run;
 
 var tok_get = Type$ReactTemplate.tok_get;
 
+var tok_calc = Type$ReactTemplate.tok_calc;
+
 var run_fun = Type$ReactTemplate.run_fun;
 
 exports.vars = vars;
@@ -193,5 +195,6 @@ exports.to_function = to_function;
 exports.get_var = get_var;
 exports.run = run;
 exports.tok_get = tok_get;
+exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
 /*  Not a pure module */

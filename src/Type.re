@@ -136,6 +136,14 @@ and tok_get = token => switch(token){
   |x => x;
 }
 
+and tok_calc = token => switch(token){
+  |Proce(tokens) => run(tokens);
+  |Bloc(tokens) => {
+    List.fold_left((_, tok) => tok_get(tok), Unit, tokens)
+  };
+  |x => x;
+}
+
 and run_fun = (func, args) => switch(func){
   |NativeF(x) => x(args)
   |_ => Unit

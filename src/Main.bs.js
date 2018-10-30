@@ -288,6 +288,8 @@ var run = StdDef$ReactTemplate.run;
 
 var tok_get = StdDef$ReactTemplate.tok_get;
 
+var tok_calc = StdDef$ReactTemplate.tok_calc;
+
 var run_fun = StdDef$ReactTemplate.run_fun;
 
 exports.vars = vars;
@@ -306,6 +308,7 @@ exports.to_function = to_function;
 exports.get_var = get_var;
 exports.run = run;
 exports.tok_get = tok_get;
+exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
 exports.first_char_at = first_char_at;
 exports.full_test = full_test;

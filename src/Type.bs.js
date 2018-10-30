@@ -221,6 +221,23 @@ function run_fun(func, args) {
   }
 }
 
+function tok_calc(token) {
+  if (typeof token === "number") {
+    return token;
+  } else {
+    switch (token.tag | 0) {
+      case 7 : 
+          return run(token[0]);
+      case 8 : 
+          return List.fold_left((function (_, tok) {
+                        return tok_get(tok);
+                      }), /* Unit */0, token[0]);
+      default:
+        return token;
+    }
+  }
+}
+
 exports.vars = vars;
 exports.get_value = get_value;
 exports.add_stack = add_stack;
@@ -237,5 +254,6 @@ exports.to_function = to_function;
 exports.get_var = get_var;
 exports.run = run;
 exports.tok_get = tok_get;
+exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
 /* vars Not a pure module */
