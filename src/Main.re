@@ -1,6 +1,6 @@
 include StdDef;
 
-let first_char_at = (liste, i) => (List.nth(liste, i).[0]);
+let first_char_at = (liste, i) => List.nth(liste, i).[0];
 
 let full_test = (reg, chaine) => switch(Js.Re.exec(chaine, reg)){
   |None => false
@@ -74,11 +74,20 @@ let rec third_cut = chaine => {
 and to_token = chaine => switch(chaine){
   |x when full_test([%bs.re "/[1-9]*[0-9]/"], x) => Entier(Utils.super_int_of_string(x));
   |x when full_test([%bs.re "/[1-9]*[0-9].[0-9]*/"], x) => Flottant(Utils.super_float_of_string(x));
+  |x when (x == "true") || (x == "false") => Booleen(bool_of_string(x));
   |x when x.[0] == '"' => Chaine(Utils.string_slice(1, String.length(x)-1, x));
   |x when x.[0] == '\'' => Carac(x.[1]);
   |x when x.[0] == '(' => {
     let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);
-    Proc(temp);
+    Proce(temp);
+  };
+  |x when x.[0] == '[' => {
+    let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);
+    TableauLex(temp);
+  };
+  |x when x.[0] == '{' => {
+    let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);
+    Bloc(temp);
   };
   |x => Nom(x);
 };
@@ -116,21 +125,6 @@ let find_first_char = (car, chaine) => {
 let rec first_cut = (car, chaine) => switch(find_first_char(car, chaine)){
   |None => [chaine];
   |Some(i) => [String.sub(chaine,0, i), ...first_cut(car, String.sub(chaine, i+1, String.length(chaine)-i-1))]
-};
-
-/* lancement d'une fonction */
-let rec run = tokens => switch(tokens){
-  |[] => Unit
-  |[func, ...args] => {
-    let funcb = get_var(func)
-    let argsb = List.map(x => x |> proc_read, args)
-    run_fun(funcb, argsb)
-  };
-}
-
-and proc_read = token => switch(token){
-  |Proc(tokens) => run(tokens);
-  |x => x;
 };
 
 let interpete = chaine => {

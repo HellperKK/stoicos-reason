@@ -5,6 +5,7 @@ var List = require("bs-platform/lib/js/list.js");
 var Block = require("bs-platform/lib/js/block.js");
 var $$String = require("bs-platform/lib/js/string.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
 var StdDef$ReactTemplate = require("./StdDef.bs.js");
@@ -142,13 +143,21 @@ function to_token(chaine) {
     return /* Entier */Block.__(0, [Utils$ReactTemplate.super_int_of_string(chaine)]);
   } else if (full_test((/[1-9]*[0-9].[0-9]*/), chaine)) {
     return /* Flottant */Block.__(1, [Utils$ReactTemplate.super_float_of_string(chaine)]);
+  } else if (chaine === "true" || chaine === "false") {
+    return /* Booleen */Block.__(6, [Pervasives.bool_of_string(chaine)]);
   } else if (Caml_string.get(chaine, 0) === /* "\"" */34) {
     return /* Chaine */Block.__(3, [Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)]);
   } else if (Caml_string.get(chaine, 0) === /* "'" */39) {
     return /* Carac */Block.__(2, [Caml_string.get(chaine, 1)]);
   } else if (Caml_string.get(chaine, 0) === /* "(" */40) {
     var temp = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
-    return /* Proc */Block.__(7, [temp]);
+    return /* Proce */Block.__(7, [temp]);
+  } else if (Caml_string.get(chaine, 0) === /* "[" */91) {
+    var temp$1 = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
+    return /* TableauLex */Block.__(9, [temp$1]);
+  } else if (Caml_string.get(chaine, 0) === /* "{" */123) {
+    var temp$2 = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
+    return /* Bloc */Block.__(8, [temp$2]);
   } else {
     return /* Nom */Block.__(5, [chaine]);
   }
@@ -229,24 +238,6 @@ function first_cut(car, chaine) {
   }
 }
 
-function run(tokens) {
-  if (tokens) {
-    var funcb = StdDef$ReactTemplate.get_var(tokens[0]);
-    var argsb = List.map(proc_read, tokens[1]);
-    return StdDef$ReactTemplate.run_fun(funcb, argsb);
-  } else {
-    return /* Unit */0;
-  }
-}
-
-function proc_read(token) {
-  if (typeof token === "number" || token.tag !== 7) {
-    return token;
-  } else {
-    return run(token[0]);
-  }
-}
-
 function interpete(chaine) {
   StdDef$ReactTemplate.sortie[0] = "";
   var code = List.map((function (x) {
@@ -259,13 +250,23 @@ function interpete(chaine) {
                 }
               }))(second_cut(first_cut(/* "\n" */10, chaine))));
   List.iter((function (x) {
-          run(x);
+          StdDef$ReactTemplate.run(x);
           return /* () */0;
         }), code);
   return StdDef$ReactTemplate.sortie[0];
 }
 
 var vars = StdDef$ReactTemplate.vars;
+
+var get_value = StdDef$ReactTemplate.get_value;
+
+var add_stack = StdDef$ReactTemplate.add_stack;
+
+var remove_stack = StdDef$ReactTemplate.remove_stack;
+
+var get_stack = StdDef$ReactTemplate.get_stack;
+
+var set_value = StdDef$ReactTemplate.set_value;
 
 var sortie = StdDef$ReactTemplate.sortie;
 
@@ -277,39 +278,35 @@ var to_char = StdDef$ReactTemplate.to_char;
 
 var to_string = StdDef$ReactTemplate.to_string;
 
+var to_bool = StdDef$ReactTemplate.to_bool;
+
 var to_function = StdDef$ReactTemplate.to_function;
 
 var get_var = StdDef$ReactTemplate.get_var;
 
+var run = StdDef$ReactTemplate.run;
+
+var tok_get = StdDef$ReactTemplate.tok_get;
+
 var run_fun = StdDef$ReactTemplate.run_fun;
 
-var cust_print = StdDef$ReactTemplate.cust_print;
-
-var cust_add = StdDef$ReactTemplate.cust_add;
-
-var cust_times = StdDef$ReactTemplate.cust_times;
-
-var cust_rem = StdDef$ReactTemplate.cust_rem;
-
-var cust_div = StdDef$ReactTemplate.cust_div;
-
-var cust_mod = StdDef$ReactTemplate.cust_mod;
-
 exports.vars = vars;
+exports.get_value = get_value;
+exports.add_stack = add_stack;
+exports.remove_stack = remove_stack;
+exports.get_stack = get_stack;
+exports.set_value = set_value;
 exports.sortie = sortie;
 exports.to_int = to_int;
 exports.to_float = to_float;
 exports.to_char = to_char;
 exports.to_string = to_string;
+exports.to_bool = to_bool;
 exports.to_function = to_function;
 exports.get_var = get_var;
+exports.run = run;
+exports.tok_get = tok_get;
 exports.run_fun = run_fun;
-exports.cust_print = cust_print;
-exports.cust_add = cust_add;
-exports.cust_times = cust_times;
-exports.cust_rem = cust_rem;
-exports.cust_div = cust_div;
-exports.cust_mod = cust_mod;
 exports.first_char_at = first_char_at;
 exports.full_test = full_test;
 exports.find_next_char = find_next_char;
@@ -321,7 +318,5 @@ exports.look_untill = look_untill;
 exports.second_cut = second_cut;
 exports.find_first_char = find_first_char;
 exports.first_cut = first_cut;
-exports.run = run;
-exports.proc_read = proc_read;
 exports.interpete = interpete;
 /* StdDef-ReactTemplate Not a pure module */

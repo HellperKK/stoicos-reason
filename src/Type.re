@@ -20,15 +20,51 @@ type token =
   |Symbol(string)
   |Nom(string)
   |Booleen(bool)
-  |Proc(list(token))
-  |Block(list(token))
-  |Array(list(token))
-  |NativeFonction(list(token)=>token)
-  |CustomFonction(list(string), list(token))
+  |Proce(list(token))
+  |Bloc(list(token))
+  |TableauLex(list(token))
+  |Tableau(list(token))
+  |Fonction(fonction)
   |Struct(Hashtbl.t(string, token))
   |Unit
 
-let vars:Hashtbl.t(string, token) = Hashtbl.create(100);
+and fonction =
+  |NativeF(list(token)=>token)
+  |CustomF(list(string), list(token));
+
+let vars:ref(list(Hashtbl.t(string, token))) = ref([Hashtbl.create(100)]);
+
+let get_value = name => {
+  List.fold_left((memo, value) => {
+    Hashtbl.mem(value, name) && memo == Unit ? Hashtbl.find(value, name) : memo
+  }, Unit, vars^)
+};
+
+let add_stack = () => {
+  vars := {
+    let ancien = vars^;
+    [Hashtbl.create(100), ...ancien];
+  };
+};
+
+let remove_stack = () => {
+  vars := switch(vars^){
+    |[] => []
+    |[head] => [head]
+    |[_, ...tail] => tail
+  };
+};
+
+let get_stack = () => switch(vars^){
+  |[] => Hashtbl.create(100)
+  |[head, ..._] => head
+};
+
+let set_value = (name, value) => switch(vars^){
+  |[] => ();
+  |[head, ..._] => Hashtbl.replace(head, name, value)
+};
+
 let sortie = ref("");
 
 let to_int = tok => switch(tok){
@@ -64,20 +100,43 @@ let to_string = tok => switch(tok){
   |Carac(x) => String.make(1, x);
   |Chaine(x) => x;
   |Symbol(x) => x;
+  |Booleen(x) => string_of_bool(x);
   |_ => ""
 };
 
+let to_bool = tok => switch(tok){
+  |Booleen(x) => x;
+  |Unit => false;
+  |_ => true
+};
+
 let to_function = tok => switch(tok){
-  |NativeFonction(x) => NativeFonction(x);
-  |_ => NativeFonction(_ => Unit)
+  |Fonction(x) => x;
+  |_ => NativeF(_ => Unit)
 };
 
 let get_var = tok => switch(tok){
-  |Nom(x) => Hashtbl.find(vars, x)
+  |Nom(x) => get_value(x)
   |x => x
 };
 
-let run_fun = (func, args) => switch(func){
-  |NativeFonction(x) => x(args)
+/* lancement d'une fonction */
+let rec run = tokens => switch(tokens){
+  |[] => Unit
+  |[func, ...args] => {
+    let funcb = get_var(func) |> to_function
+    let argsb = List.map(x => x |> tok_get |> get_var, args)
+    run_fun(funcb, argsb)
+  };
+}
+
+and tok_get = token => switch(token){
+  |Proce(tokens) => run(tokens);
+  |TableauLex(tokens) => Tableau(List.map(tok => tok |> tok_get |> get_var, tokens))
+  |x => x;
+}
+
+and run_fun = (func, args) => switch(func){
+  |NativeF(x) => x(args)
   |_ => Unit
 };

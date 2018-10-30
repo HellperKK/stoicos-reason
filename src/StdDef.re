@@ -1,57 +1,112 @@
 include Type;
 
-let cust_print = tokens => {
+/* fonctions IO */
+set_value("print", Fonction(NativeF(tokens => {
   let chaines = List.map(to_string, tokens);
   let chaine = String.concat(" ", chaines);
-  /* Js.log(chaine); */
   sortie := sortie^ ++ chaine
   Chaine(chaine);
-};
+})));
 
-let cust_add = tokens => {
+/* fonctions booleens */
+set_value("not", Fonction(NativeF(tokens => {
+  let bool = List.nth(tokens, 0) |> to_bool;
+  Booleen(! bool);
+})));
+
+set_value("or", Fonction(NativeF(tokens => switch(tokens){
+  |[] => Unit
+  |[head, ...tail] => {
+    let result = List.map(to_bool, tail)
+      |> List.fold_left((||), to_bool(head));
+    Booleen(result);
+  };
+})));
+
+set_value("and", Fonction(NativeF(tokens => switch(tokens){
+  |[] => Unit
+  |[head, ...tail] => {
+    let result = List.map(to_bool, tail)
+      |> List.fold_left((&&), to_bool(head));
+    Booleen(result);
+  };
+})));
+
+/* fonctions chaines */
+set_value("^", Fonction(NativeF(tokens => {
+  let chaines = List.map(to_string, tokens);
+  let chaine = String.concat("", chaines);
+  Chaine(chaine);
+})));
+
+/* fonctions entiers */
+set_value("+", Fonction(NativeF(tokens => {
   let result = List.map(to_int, tokens)
     |> List.fold_left((+), 0);
   Entier(result);
-};
-
-let cust_times = tokens => {
+})));
+set_value("*", Fonction(NativeF(tokens => {
   let result = List.map(to_int, tokens)
     |> List.fold_left((*), 1);
   Entier(result);
-};
-
-let cust_rem = tokens => switch(tokens){
+})));
+set_value("-", Fonction(NativeF(tokens => switch(tokens){
   |[] => Unit
   |[head, ...tail] => {
     let result = List.map(to_int, tail)
       |> List.fold_left((-), to_int(head));
     Entier(result);
   };
-};
-
-let cust_div = tokens => switch(tokens){
+})));
+set_value("/", Fonction(NativeF(tokens => switch(tokens){
   |[] => Unit
   |[head, ...tail] => {
     let result = List.map(to_int, tail)
       |> List.fold_left((/), to_int(head));
     Entier(result);
   };
-};
-
-let cust_mod = tokens => switch(tokens){
+})));
+set_value("%", Fonction(NativeF(tokens => switch(tokens){
   |[] => Unit
   |[head, ...tail] => {
     let result = List.map(to_int, tail)
       |> List.fold_left((mod), to_int(head));
     Entier(result);
   };
-};
+})));
 
-let _ = {
-  Hashtbl.add(vars, "print", NativeFonction(cust_print));
-  Hashtbl.add(vars, "+", NativeFonction(cust_add));
-  Hashtbl.add(vars, "*", NativeFonction(cust_times));
-  Hashtbl.add(vars, "-", NativeFonction(cust_rem));
-  Hashtbl.add(vars, "/", NativeFonction(cust_div));
-  Hashtbl.add(vars, "%", NativeFonction(cust_mod));
-};
+/* fonctions flottants */
+set_value("+.", Fonction(NativeF(tokens => {
+  let result = List.map(to_float, tokens)
+    |> List.fold_left((+.), 0.);
+  Flottant(result);
+})));
+set_value("*.", Fonction(NativeF(tokens => {
+  let result = List.map(to_float, tokens)
+    |> List.fold_left((*.), 1.0);
+  Flottant(result);
+})));
+set_value("-.", Fonction(NativeF(tokens => switch(tokens){
+  |[] => Unit
+  |[head, ...tail] => {
+    let result = List.map(to_float, tail)
+      |> List.fold_left((-.), to_float(head));
+    Flottant(result);
+  };
+})));
+set_value("/.", Fonction(NativeF(tokens => switch(tokens){
+  |[] => Unit
+  |[head, ...tail] => {
+    let result = List.map(to_float, tail)
+      |> List.fold_left((/.), to_float(head));
+    Flottant(result);
+  };
+})));
+set_value("%.", Fonction(NativeF(tokens => switch(tokens){
+  |[] => Unit
+  |[head, ...tail] => {
+    let result = List.map(to_float, tail)
+      |> List.fold_left((mod_float), to_float(head));
+    Flottant(result);
+  };
+})));
