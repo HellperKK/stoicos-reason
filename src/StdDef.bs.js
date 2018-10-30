@@ -14,6 +14,13 @@ Type$ReactTemplate.set_value("print", /* Fonction */Block.__(11, [/* NativeF */B
                 return /* Chaine */Block.__(3, [chaine]);
               })])]));
 
+Type$ReactTemplate.set_value("=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var name = Type$ReactTemplate.to_sym(List.nth(tokens, 0));
+                var value = Type$ReactTemplate.get_var(Type$ReactTemplate.tok_get(List.nth(tokens, 1)));
+                Type$ReactTemplate.set_value(name, value);
+                return /* Unit */0;
+              })])]));
+
 Type$ReactTemplate.set_value("not", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
                 return /* Booleen */Block.__(6, [!bool]);
@@ -165,6 +172,8 @@ var to_char = Type$ReactTemplate.to_char;
 
 var to_string = Type$ReactTemplate.to_string;
 
+var to_sym = Type$ReactTemplate.to_sym;
+
 var to_bool = Type$ReactTemplate.to_bool;
 
 var to_function = Type$ReactTemplate.to_function;
@@ -190,6 +199,7 @@ exports.to_int = to_int;
 exports.to_float = to_float;
 exports.to_char = to_char;
 exports.to_string = to_string;
+exports.to_sym = to_sym;
 exports.to_bool = to_bool;
 exports.to_function = to_function;
 exports.get_var = get_var;

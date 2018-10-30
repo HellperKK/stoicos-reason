@@ -8,6 +8,14 @@ set_value("print", Fonction(NativeF(tokens => {
   Chaine(chaine);
 })));
 
+/* fonction variables */
+set_value("=", Fonction(NativeF(tokens => {
+  let name = List.nth(tokens, 0) |> to_sym;
+  let value = List.nth(tokens, 1) |> tok_get |> get_var;
+  set_value(name, value);
+  Unit
+})));
+
 /* fonctions booleens */
 set_value("not", Fonction(NativeF(tokens => {
   let bool = List.nth(tokens, 0) |> to_bool;

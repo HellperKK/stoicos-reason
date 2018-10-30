@@ -278,6 +278,8 @@ var to_char = StdDef$ReactTemplate.to_char;
 
 var to_string = StdDef$ReactTemplate.to_string;
 
+var to_sym = StdDef$ReactTemplate.to_sym;
+
 var to_bool = StdDef$ReactTemplate.to_bool;
 
 var to_function = StdDef$ReactTemplate.to_function;
@@ -303,6 +305,7 @@ exports.to_int = to_int;
 exports.to_float = to_float;
 exports.to_char = to_char;
 exports.to_string = to_string;
+exports.to_sym = to_sym;
 exports.to_bool = to_bool;
 exports.to_function = to_function;
 exports.get_var = get_var;

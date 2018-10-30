@@ -151,6 +151,28 @@ function to_string(tok) {
   }
 }
 
+function to_sym(tok) {
+  if (typeof tok === "number") {
+    return "";
+  } else {
+    switch (tok.tag | 0) {
+      case 0 : 
+          return String(tok[0]);
+      case 1 : 
+          return Pervasives.string_of_float(tok[0]);
+      case 2 : 
+          return $$String.make(1, tok[0]);
+      case 3 : 
+      case 4 : 
+          return tok[0];
+      case 6 : 
+          return Pervasives.string_of_bool(tok[0]);
+      default:
+        return "";
+    }
+  }
+}
+
 function to_bool(tok) {
   if (typeof tok === "number") {
     return false;
@@ -249,6 +271,7 @@ exports.to_int = to_int;
 exports.to_float = to_float;
 exports.to_char = to_char;
 exports.to_string = to_string;
+exports.to_sym = to_sym;
 exports.to_bool = to_bool;
 exports.to_function = to_function;
 exports.get_var = get_var;
