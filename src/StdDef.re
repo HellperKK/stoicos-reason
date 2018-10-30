@@ -16,6 +16,13 @@ set_value("=", Fonction(NativeF(tokens => {
   Unit
 })));
 
+set_value("assign", Fonction(NativeF(tokens => {
+  let noms = List.nth(tokens, 0) |> to_array |> List.map(to_sym);
+  let value = List.nth(tokens, 1)
+  List.iter(x => set_value(x, value), noms)
+  Unit
+})));
+
 /* fonctions blocs */
 set_value("if", Fonction(NativeF(tokens => {
   let bool = List.nth(tokens, 0) |> to_bool;

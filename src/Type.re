@@ -40,6 +40,11 @@ let get_value = name => {
   }, Unit, vars^)
 };
 
+let set_value = (name, value) => switch(vars^){
+  |[] => ();
+  |[head, ..._] => Hashtbl.replace(head, name, value)
+};
+
 let add_stack = () => {
   vars := {
     let ancien = vars^;
@@ -58,11 +63,6 @@ let remove_stack = () => {
 let get_stack = () => switch(vars^){
   |[] => Hashtbl.create(100)
   |[head, ..._] => head
-};
-
-let set_value = (name, value) => switch(vars^){
-  |[] => ();
-  |[head, ..._] => Hashtbl.replace(head, name, value)
 };
 
 let get_var = tok => switch(tok){
@@ -123,6 +123,11 @@ let to_bool = tok => switch(tok){
   |Booleen(x) => x;
   |Unit => false;
   |_ => true;
+};
+
+let to_array = tok => switch(tok){
+  |Tableau(x) => x;
+  |_ => [];
 };
 
 let to_block = tok => switch(tok){

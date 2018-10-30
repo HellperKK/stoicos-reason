@@ -21,6 +21,15 @@ Type$ReactTemplate.set_value("=", /* Fonction */Block.__(11, [/* NativeF */Block
                 return /* Unit */0;
               })])]));
 
+Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(List.nth(tokens, 0)));
+                var value = List.nth(tokens, 1);
+                List.iter((function (x) {
+                        return Type$ReactTemplate.set_value(x, value);
+                      }), noms);
+                return /* Unit */0;
+              })])]));
+
 Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
                 var bloc = Type$ReactTemplate.to_block(List.nth(tokens, 1));
@@ -165,13 +174,13 @@ var vars = Type$ReactTemplate.vars;
 
 var get_value = Type$ReactTemplate.get_value;
 
+var set_value = Type$ReactTemplate.set_value;
+
 var add_stack = Type$ReactTemplate.add_stack;
 
 var remove_stack = Type$ReactTemplate.remove_stack;
 
 var get_stack = Type$ReactTemplate.get_stack;
-
-var set_value = Type$ReactTemplate.set_value;
 
 var get_var = Type$ReactTemplate.get_var;
 
@@ -189,6 +198,8 @@ var to_sym = Type$ReactTemplate.to_sym;
 
 var to_bool = Type$ReactTemplate.to_bool;
 
+var to_array = Type$ReactTemplate.to_array;
+
 var to_block = Type$ReactTemplate.to_block;
 
 var to_function = Type$ReactTemplate.to_function;
@@ -203,10 +214,10 @@ var run_fun = Type$ReactTemplate.run_fun;
 
 exports.vars = vars;
 exports.get_value = get_value;
+exports.set_value = set_value;
 exports.add_stack = add_stack;
 exports.remove_stack = remove_stack;
 exports.get_stack = get_stack;
-exports.set_value = set_value;
 exports.get_var = get_var;
 exports.sortie = sortie;
 exports.to_int = to_int;
@@ -215,6 +226,7 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
+exports.to_array = to_array;
 exports.to_block = to_block;
 exports.to_function = to_function;
 exports.run = run;

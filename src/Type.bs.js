@@ -26,6 +26,15 @@ function get_value(name) {
               }), /* Unit */0, vars[0]);
 }
 
+function set_value(name, value) {
+  var match = vars[0];
+  if (match) {
+    return Hashtbl.replace(match[0], name, value);
+  } else {
+    return /* () */0;
+  }
+}
+
 function add_stack() {
   var ancien = vars[0];
   vars[0] = /* :: */[
@@ -57,15 +66,6 @@ function get_stack() {
     return match[0];
   } else {
     return Hashtbl.create(undefined, 100);
-  }
-}
-
-function set_value(name, value) {
-  var match = vars[0];
-  if (match) {
-    return Hashtbl.replace(match[0], name, value);
-  } else {
-    return /* () */0;
   }
 }
 
@@ -191,6 +191,14 @@ function to_bool(tok) {
   }
 }
 
+function to_array(tok) {
+  if (typeof tok === "number" || tok.tag !== 10) {
+    return /* [] */0;
+  } else {
+    return tok[0];
+  }
+}
+
 function to_block(tok) {
   if (typeof tok === "number" || tok.tag !== 8) {
     return /* Bloc */Block.__(8, [/* :: */[
@@ -229,14 +237,6 @@ function run(tokens) {
   }
 }
 
-function run_fun(func, args) {
-  if (func.tag) {
-    return /* Unit */0;
-  } else {
-    return Curry._1(func[0], args);
-  }
-}
-
 function tok_get(token) {
   if (typeof token === "number") {
     return token;
@@ -251,6 +251,14 @@ function tok_get(token) {
       default:
         return token;
     }
+  }
+}
+
+function run_fun(func, args) {
+  if (func.tag) {
+    return /* Unit */0;
+  } else {
+    return Curry._1(func[0], args);
   }
 }
 
@@ -273,10 +281,10 @@ function tok_calc(token) {
 
 exports.vars = vars;
 exports.get_value = get_value;
+exports.set_value = set_value;
 exports.add_stack = add_stack;
 exports.remove_stack = remove_stack;
 exports.get_stack = get_stack;
-exports.set_value = set_value;
 exports.get_var = get_var;
 exports.sortie = sortie;
 exports.to_int = to_int;
@@ -285,6 +293,7 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
+exports.to_array = to_array;
 exports.to_block = to_block;
 exports.to_function = to_function;
 exports.run = run;
