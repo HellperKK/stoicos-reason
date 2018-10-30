@@ -117,7 +117,12 @@ let to_sym = tok => switch(tok){
 let to_bool = tok => switch(tok){
   |Booleen(x) => x;
   |Unit => false;
-  |_ => true
+  |_ => true;
+};
+
+let to_bloc = tok => switch(tok){
+  |Bloc(x) => x;
+  |_ => [];
 };
 
 let to_function = tok => switch(tok){

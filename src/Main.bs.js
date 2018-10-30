@@ -284,6 +284,8 @@ var to_sym = StdDef$ReactTemplate.to_sym;
 
 var to_bool = StdDef$ReactTemplate.to_bool;
 
+var to_bloc = StdDef$ReactTemplate.to_bloc;
+
 var to_function = StdDef$ReactTemplate.to_function;
 
 var get_var = StdDef$ReactTemplate.get_var;
@@ -309,6 +311,7 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
+exports.to_bloc = to_bloc;
 exports.to_function = to_function;
 exports.get_var = get_var;
 exports.run = run;

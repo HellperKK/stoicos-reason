@@ -183,6 +183,14 @@ function to_bool(tok) {
   }
 }
 
+function to_bloc(tok) {
+  if (typeof tok === "number" || tok.tag !== 8) {
+    return /* [] */0;
+  } else {
+    return tok[0];
+  }
+}
+
 function to_function(tok) {
   var exit = 0;
   if (typeof tok === "number" || tok.tag !== 11) {
@@ -218,6 +226,14 @@ function run(tokens) {
   }
 }
 
+function run_fun(func, args) {
+  if (func.tag) {
+    return /* Unit */0;
+  } else {
+    return Curry._1(func[0], args);
+  }
+}
+
 function tok_get(token) {
   if (typeof token === "number") {
     return token;
@@ -232,14 +248,6 @@ function tok_get(token) {
       default:
         return token;
     }
-  }
-}
-
-function run_fun(func, args) {
-  if (func.tag) {
-    return /* Unit */0;
-  } else {
-    return Curry._1(func[0], args);
   }
 }
 
@@ -273,6 +281,7 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
+exports.to_bloc = to_bloc;
 exports.to_function = to_function;
 exports.get_var = get_var;
 exports.run = run;
