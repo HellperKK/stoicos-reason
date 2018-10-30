@@ -65,6 +65,11 @@ let set_value = (name, value) => switch(vars^){
   |[head, ..._] => Hashtbl.replace(head, name, value)
 };
 
+let get_var = tok => switch(tok){
+  |Nom(x) => get_value(x)
+  |x => x
+};
+
 let sortie = ref("");
 
 let to_int = tok => switch(tok){
@@ -120,19 +125,14 @@ let to_bool = tok => switch(tok){
   |_ => true;
 };
 
-let to_bloc = tok => switch(tok){
-  |Bloc(x) => x;
-  |_ => [];
+let to_block = tok => switch(tok){
+  |Bloc(x) => Bloc(x);
+  |x => Bloc([get_var(x)]);
 };
 
 let to_function = tok => switch(tok){
   |Fonction(x) => x;
   |_ => NativeF(_ => Unit)
-};
-
-let get_var = tok => switch(tok){
-  |Nom(x) => get_value(x)
-  |x => x
 };
 
 /* lancement d'une fonction */

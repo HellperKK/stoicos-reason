@@ -11,9 +11,17 @@ set_value("print", Fonction(NativeF(tokens => {
 /* fonction variables */
 set_value("=", Fonction(NativeF(tokens => {
   let name = List.nth(tokens, 0) |> to_sym;
-  let value = List.nth(tokens, 1) |> tok_get |> get_var;
+  let value = List.nth(tokens, 1);
   set_value(name, value);
   Unit
+})));
+
+/* fonctions blocs */
+set_value("if", Fonction(NativeF(tokens => {
+  let bool = List.nth(tokens, 0) |> to_bool;
+  let bloc = List.nth(tokens, 1) |> to_block;
+  let blocb = List.nth(tokens, 2) |> to_block;
+  bool ? tok_calc(bloc) : tok_calc(blocb)
 })));
 
 /* fonctions booleens */

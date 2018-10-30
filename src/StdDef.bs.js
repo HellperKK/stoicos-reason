@@ -16,9 +16,20 @@ Type$ReactTemplate.set_value("print", /* Fonction */Block.__(11, [/* NativeF */B
 
 Type$ReactTemplate.set_value("=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var name = Type$ReactTemplate.to_sym(List.nth(tokens, 0));
-                var value = Type$ReactTemplate.get_var(Type$ReactTemplate.tok_get(List.nth(tokens, 1)));
+                var value = List.nth(tokens, 1);
                 Type$ReactTemplate.set_value(name, value);
                 return /* Unit */0;
+              })])]));
+
+Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
+                var bloc = Type$ReactTemplate.to_block(List.nth(tokens, 1));
+                var blocb = Type$ReactTemplate.to_block(List.nth(tokens, 2));
+                if (bool) {
+                  return Type$ReactTemplate.tok_calc(bloc);
+                } else {
+                  return Type$ReactTemplate.tok_calc(blocb);
+                }
               })])]));
 
 Type$ReactTemplate.set_value("not", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
@@ -162,6 +173,8 @@ var get_stack = Type$ReactTemplate.get_stack;
 
 var set_value = Type$ReactTemplate.set_value;
 
+var get_var = Type$ReactTemplate.get_var;
+
 var sortie = Type$ReactTemplate.sortie;
 
 var to_int = Type$ReactTemplate.to_int;
@@ -176,11 +189,9 @@ var to_sym = Type$ReactTemplate.to_sym;
 
 var to_bool = Type$ReactTemplate.to_bool;
 
-var to_bloc = Type$ReactTemplate.to_bloc;
+var to_block = Type$ReactTemplate.to_block;
 
 var to_function = Type$ReactTemplate.to_function;
-
-var get_var = Type$ReactTemplate.get_var;
 
 var run = Type$ReactTemplate.run;
 
@@ -196,6 +207,7 @@ exports.add_stack = add_stack;
 exports.remove_stack = remove_stack;
 exports.get_stack = get_stack;
 exports.set_value = set_value;
+exports.get_var = get_var;
 exports.sortie = sortie;
 exports.to_int = to_int;
 exports.to_float = to_float;
@@ -203,9 +215,8 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
-exports.to_bloc = to_bloc;
+exports.to_block = to_block;
 exports.to_function = to_function;
-exports.get_var = get_var;
 exports.run = run;
 exports.tok_get = tok_get;
 exports.tok_calc = tok_calc;

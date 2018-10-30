@@ -270,6 +270,8 @@ var get_stack = StdDef$ReactTemplate.get_stack;
 
 var set_value = StdDef$ReactTemplate.set_value;
 
+var get_var = StdDef$ReactTemplate.get_var;
+
 var sortie = StdDef$ReactTemplate.sortie;
 
 var to_int = StdDef$ReactTemplate.to_int;
@@ -284,11 +286,9 @@ var to_sym = StdDef$ReactTemplate.to_sym;
 
 var to_bool = StdDef$ReactTemplate.to_bool;
 
-var to_bloc = StdDef$ReactTemplate.to_bloc;
+var to_block = StdDef$ReactTemplate.to_block;
 
 var to_function = StdDef$ReactTemplate.to_function;
-
-var get_var = StdDef$ReactTemplate.get_var;
 
 var run = StdDef$ReactTemplate.run;
 
@@ -304,6 +304,7 @@ exports.add_stack = add_stack;
 exports.remove_stack = remove_stack;
 exports.get_stack = get_stack;
 exports.set_value = set_value;
+exports.get_var = get_var;
 exports.sortie = sortie;
 exports.to_int = to_int;
 exports.to_float = to_float;
@@ -311,9 +312,8 @@ exports.to_char = to_char;
 exports.to_string = to_string;
 exports.to_sym = to_sym;
 exports.to_bool = to_bool;
-exports.to_bloc = to_bloc;
+exports.to_block = to_block;
 exports.to_function = to_function;
-exports.get_var = get_var;
 exports.run = run;
 exports.tok_get = tok_get;
 exports.tok_calc = tok_calc;
