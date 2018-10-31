@@ -28,6 +28,39 @@ function list_slice(min, max, liste) {
   return List.rev(aux(/* [] */0, min));
 }
 
+function list_fetch(liste, index, $$default) {
+  try {
+    return List.nth(liste, index);
+  }
+  catch (raw_exn){
+    var exn = Js_exn.internalToOCamlException(raw_exn);
+    var exit = 0;
+    if (exn[0] === Caml_builtin_exceptions.invalid_argument && exn[1] === "List.nth") {
+      return $$default;
+    } else {
+      exit = 1;
+    }
+    if (exit === 1) {
+      if (exn[0] === Caml_builtin_exceptions.failure) {
+        if (exn[1] === "nth") {
+          return $$default;
+        } else {
+          throw exn;
+        }
+      } else {
+        throw exn;
+      }
+    }
+    
+  }
+}
+
+function list_same_size(liste, listeb, $$default) {
+  return List.mapi((function (index, _) {
+                return list_fetch(listeb, index, $$default);
+              }), liste);
+}
+
 function string_slice(min, max, chaine) {
   var size = max - min | 0;
   return $$String.sub(chaine, min, size);
@@ -70,6 +103,8 @@ function super_float_of_string(chaine) {
 }
 
 exports.list_slice = list_slice;
+exports.list_fetch = list_fetch;
+exports.list_same_size = list_same_size;
 exports.string_slice = string_slice;
 exports.super_int_of_string = super_int_of_string;
 exports.super_float_of_string = super_float_of_string;

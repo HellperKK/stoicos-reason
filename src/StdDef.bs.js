@@ -41,6 +41,15 @@ Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Bloc
                 }
               })])]));
 
+Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var args = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(List.nth(tokens, 0)));
+                var bloc = Type$ReactTemplate.to_block(List.nth(tokens, 1));
+                return /* Fonction */Block.__(11, [/* CustomF */Block.__(1, [
+                              args,
+                              bloc
+                            ])]);
+              })])]));
+
 Type$ReactTemplate.set_value("not", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
                 return /* Booleen */Block.__(6, [!bool]);

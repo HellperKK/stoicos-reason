@@ -31,6 +31,13 @@ set_value("if", Fonction(NativeF(tokens => {
   bool ? tok_calc(bloc) : tok_calc(blocb)
 })));
 
+/* fonction construction */
+set_value("fun", Fonction(NativeF(tokens => {
+  let args = List.nth(tokens, 0) |> to_array |> List.map(to_sym);
+  let bloc = List.nth(tokens, 1) |> to_block;
+  Fonction(CustomF(args, bloc))
+})));
+
 /* fonctions booleens */
 set_value("not", Fonction(NativeF(tokens => {
   let bool = List.nth(tokens, 0) |> to_bool;

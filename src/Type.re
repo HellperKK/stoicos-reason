@@ -131,8 +131,8 @@ let to_array = tok => switch(tok){
 };
 
 let to_block = tok => switch(tok){
-  |Bloc(x) => Bloc(x);
-  |x => Bloc([get_var(x)]);
+  |Bloc(x) => x;
+  |x => [get_var(x)];
 };
 
 let to_function = tok => switch(tok){
@@ -156,15 +156,19 @@ and tok_get = token => switch(token){
   |x => x;
 }
 
-and tok_calc = token => switch(token){
-  |Proce(tokens) => run(tokens);
-  |Bloc(tokens) => {
-    List.fold_left((_, tok) => tok_get(tok), Unit, tokens)
-  };
-  |x => x;
+and tok_calc = tokens => {
+  List.fold_left((_, tok) => tok_get(tok), Unit, tokens)
 }
 
 and run_fun = (func, args) => switch(func){
   |NativeF(x) => x(args)
-  |_ => Unit
+  |CustomF(names, code) => {
+    add_stack();
+    let argsb = Utils.list_same_size(names, args, Unit);
+    List.iter2((name, value) => set_value(name, value), names, argsb)
+    let result = tok_calc(code);
+    Js.log(result);
+    remove_stack();
+    result;
+  }
 };

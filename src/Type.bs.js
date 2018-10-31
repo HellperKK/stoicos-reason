@@ -201,12 +201,12 @@ function to_array(tok) {
 
 function to_block(tok) {
   if (typeof tok === "number" || tok.tag !== 8) {
-    return /* Bloc */Block.__(8, [/* :: */[
-                get_var(tok),
-                /* [] */0
-              ]]);
+    return /* :: */[
+            get_var(tok),
+            /* [] */0
+          ];
   } else {
-    return /* Bloc */Block.__(8, [tok[0]]);
+    return tok[0];
   }
 }
 
@@ -254,28 +254,24 @@ function tok_get(token) {
   }
 }
 
-function run_fun(func, args) {
-  if (func.tag) {
-    return /* Unit */0;
-  } else {
-    return Curry._1(func[0], args);
-  }
+function tok_calc(tokens) {
+  return List.fold_left((function (_, tok) {
+                return tok_get(tok);
+              }), /* Unit */0, tokens);
 }
 
-function tok_calc(token) {
-  if (typeof token === "number") {
-    return token;
+function run_fun(func, args) {
+  if (func.tag) {
+    var names = func[0];
+    add_stack(/* () */0);
+    var argsb = Utils$ReactTemplate.list_same_size(names, args, /* Unit */0);
+    List.iter2(set_value, names, argsb);
+    var result = tok_calc(func[1]);
+    console.log(result);
+    remove_stack(/* () */0);
+    return result;
   } else {
-    switch (token.tag | 0) {
-      case 7 : 
-          return run(token[0]);
-      case 8 : 
-          return List.fold_left((function (_, tok) {
-                        return tok_get(tok);
-                      }), /* Unit */0, token[0]);
-      default:
-        return token;
-    }
+    return Curry._1(func[0], args);
   }
 }
 

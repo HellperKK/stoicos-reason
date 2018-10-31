@@ -5,6 +5,17 @@ let list_slice = (min, max, liste) => {
   List.rev(aux([], min));
 };
 
+let list_fetch = (liste, index, default) => {
+  try(List.nth(liste, index)){
+    |Invalid_argument("List.nth") => default;
+    |Failure("nth") => default;
+  };
+};
+
+let list_same_size = (liste, listeb, default) => {
+  List.mapi((index, _) => list_fetch(listeb, index, default), liste)
+};
+
 let string_slice = (min, max, chaine) => {
   let size = max - min;
   String.sub(chaine, min, size)
