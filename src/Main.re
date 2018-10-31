@@ -10,8 +10,9 @@ let full_test = (reg, chaine) => switch(Js.Re.exec(chaine, reg)){
       |None => false
       |Some(x) => x == chaine
     };
-  } ;
+  };
 };
+
 /* troisieme filtre */
 let find_next_char = (car, chaine) => {
   let rec aux = i => switch(i){
