@@ -167,7 +167,6 @@ and run_fun = (func, args) => switch(func){
     let argsb = Utils.list_same_size(names, args, Unit);
     List.iter2((name, value) => set_value(name, value), names, argsb)
     let result = tok_calc(code);
-    Js.log(result);
     remove_stack();
     result;
   }

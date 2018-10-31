@@ -75,7 +75,9 @@ and to_token = chaine => switch(chaine){
   |x when full_test([%bs.re "/[1-9]*[0-9]/"], x) => Entier(Utils.super_int_of_string(x));
   |x when full_test([%bs.re "/[1-9]*[0-9].[0-9]*/"], x) => Flottant(Utils.super_float_of_string(x));
   |x when (x == "true") || (x == "false") => Booleen(bool_of_string(x));
-  |x when x.[0] == '"' => Chaine(Utils.string_slice(1, String.length(x)-1, x));
+  |x when x.[0] == '"' => {
+    Chaine(Utils.string_slice(1, String.length(x)-1, x));
+  };
   |x when x.[0] == '\'' => Carac(x.[1]);
   |x when x.[0] == '(' => {
     let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);

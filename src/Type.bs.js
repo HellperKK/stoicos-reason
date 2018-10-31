@@ -270,7 +270,6 @@ function run_fun(func, args) {
     var argsb = Utils$ReactTemplate.list_same_size(names, args, /* Unit */0);
     List.iter2(set_value, names, argsb);
     var result = tok_calc(func[1]);
-    console.log(result);
     remove_stack(/* () */0);
     return result;
   } else {
