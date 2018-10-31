@@ -193,7 +193,10 @@ function to_bool(tok) {
 
 function to_array(tok) {
   if (typeof tok === "number" || tok.tag !== 10) {
-    return /* [] */0;
+    return /* :: */[
+            tok,
+            /* [] */0
+          ];
   } else {
     return tok[0];
   }
@@ -202,7 +205,7 @@ function to_array(tok) {
 function to_block(tok) {
   if (typeof tok === "number" || tok.tag !== 8) {
     return /* :: */[
-            get_var(tok),
+            tok,
             /* [] */0
           ];
   } else {

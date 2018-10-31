@@ -127,12 +127,12 @@ let to_bool = tok => switch(tok){
 
 let to_array = tok => switch(tok){
   |Tableau(x) => x;
-  |_ => [];
+  |x => [x];
 };
 
 let to_block = tok => switch(tok){
   |Bloc(x) => x;
-  |x => [get_var(x)];
+  |x => [x];
 };
 
 let to_function = tok => switch(tok){
