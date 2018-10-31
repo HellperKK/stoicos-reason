@@ -6,6 +6,11 @@ var Block = require("bs-platform/lib/js/block.js");
 var $$String = require("bs-platform/lib/js/string.js");
 var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var Type$ReactTemplate = require("./Type.bs.js");
+var Utils$ReactTemplate = require("./Utils.bs.js");
+
+function look_at(liste, index) {
+  return Utils$ReactTemplate.list_fetch(liste, index, /* Unit */0);
+}
 
 Type$ReactTemplate.set_value("print", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var chaines = List.map(Type$ReactTemplate.to_string, tokens);
@@ -15,15 +20,15 @@ Type$ReactTemplate.set_value("print", /* Fonction */Block.__(11, [/* NativeF */B
               })])]));
 
 Type$ReactTemplate.set_value("=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
-                var name = Type$ReactTemplate.to_sym(List.nth(tokens, 0));
-                var value = List.nth(tokens, 1);
+                var name = Type$ReactTemplate.to_sym(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
                 Type$ReactTemplate.set_value(name, value);
                 return /* Unit */0;
               })])]));
 
 Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
-                var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(List.nth(tokens, 0)));
-                var value = List.nth(tokens, 1);
+                var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
                 List.iter((function (x) {
                         return Type$ReactTemplate.set_value(x, value);
                       }), noms);
@@ -31,9 +36,9 @@ Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */
               })])]));
 
 Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
-                var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
-                var bloc = Type$ReactTemplate.to_block(List.nth(tokens, 1));
-                var blocb = Type$ReactTemplate.to_block(List.nth(tokens, 2));
+                var bool = Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                var blocb = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 2, /* Unit */0));
                 if (bool) {
                   return Type$ReactTemplate.tok_calc(bloc);
                 } else {
@@ -42,8 +47,8 @@ Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Bloc
               })])]));
 
 Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
-                var args = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(List.nth(tokens, 0)));
-                var bloc = Type$ReactTemplate.to_block(List.nth(tokens, 1));
+                var args = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
                 return /* Fonction */Block.__(11, [/* CustomF */Block.__(1, [
                               args,
                               bloc
@@ -51,7 +56,7 @@ Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(11, [/* NativeF */Blo
               })])]));
 
 Type$ReactTemplate.set_value("not", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
-                var bool = Type$ReactTemplate.to_bool(List.nth(tokens, 0));
+                var bool = Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
                 return /* Booleen */Block.__(6, [!bool]);
               })])]));
 
@@ -242,4 +247,5 @@ exports.run = run;
 exports.tok_get = tok_get;
 exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
+exports.look_at = look_at;
 /*  Not a pure module */

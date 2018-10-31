@@ -66,7 +66,6 @@ let rec third_cut = chaine => {
         };
       };
     };
-
   };
   aux([], chaine) |> List.rev
 }

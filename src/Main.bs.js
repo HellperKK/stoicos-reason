@@ -300,6 +300,8 @@ var tok_calc = StdDef$ReactTemplate.tok_calc;
 
 var run_fun = StdDef$ReactTemplate.run_fun;
 
+var look_at = StdDef$ReactTemplate.look_at;
+
 exports.vars = vars;
 exports.get_value = get_value;
 exports.set_value = set_value;
@@ -321,6 +323,7 @@ exports.run = run;
 exports.tok_get = tok_get;
 exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
+exports.look_at = look_at;
 exports.first_char_at = first_char_at;
 exports.full_test = full_test;
 exports.find_next_char = find_next_char;
