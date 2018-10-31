@@ -35,6 +35,14 @@ Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */
                 return /* Unit */0;
               })])]));
 
+Type$ReactTemplate.set_value("bind", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var value = Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                var valueb = Utils$ReactTemplate.list_same_size(noms, value, /* Unit */0);
+                List.iter2(Type$ReactTemplate.set_value, noms, valueb);
+                return /* Unit */0;
+              })])]));
+
 Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
                 var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
