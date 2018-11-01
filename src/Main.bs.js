@@ -160,8 +160,10 @@ function to_token(chaine) {
     return /* Bloc */Block.__(8, [temp$2]);
   } else if (full_test((/:[A-Za-z]+/), chaine)) {
     return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
-  } else {
+  } else if (full_test((/[A-Za-z]+/), chaine)) {
     return /* Nom */Block.__(5, [chaine]);
+  } else {
+    return /* Unit */0;
   }
 }
 
@@ -244,13 +246,13 @@ function interpete(chaine) {
   StdDef$ReactTemplate.sortie[0] = "";
   var code = List.map((function (x) {
           return List.map(to_token, third_cut(x));
-        }), List.filter((function (x) {
-                if (x !== "") {
-                  return Caml_string.get($$String.trim(x), 0) !== /* "#" */35;
-                } else {
-                  return false;
-                }
-              }))(second_cut(first_cut(/* "\n" */10, chaine))));
+        }), second_cut(List.filter((function (x) {
+                    if ($$String.trim(x) !== "") {
+                      return Caml_string.get($$String.trim(x), 0) !== /* "#" */35;
+                    } else {
+                      return false;
+                    }
+                  }))(first_cut(/* "\n" */10, chaine))));
   List.iter((function (x) {
           StdDef$ReactTemplate.run(x);
           return /* () */0;

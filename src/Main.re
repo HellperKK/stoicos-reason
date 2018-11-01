@@ -94,7 +94,8 @@ and to_token = chaine => switch(chaine){
   |x when full_test([%bs.re "/:[A-Za-z]+/"], x) => {
     Symbol(Utils.string_slice(1, String.length(x), x))
   };
-  |x => Nom(x);
+  |x when full_test([%bs.re "/[A-Za-z]+/"], x) => Nom(x);
+  |_ => Unit
 };
 
 /* second filtre */
@@ -135,8 +136,8 @@ let rec first_cut = (car, chaine) => switch(find_first_char(car, chaine)){
 let interpete = chaine => {
   sortie := ""
   let code = first_cut('\n', chaine)
+    |> List.filter(x => (String.trim(x) != "") && (String.trim(x).[0] != '#'))
     |> second_cut
-    |> List.filter(x => (x != "") && (String.trim(x).[0] != '#'))
     |> List.map(x => x |> third_cut |> List.map(to_token));
   List.iter(x => x |> run |> ignore, code);
   sortie^;
