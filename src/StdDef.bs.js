@@ -4,6 +4,7 @@
 var List = require("bs-platform/lib/js/list.js");
 var Block = require("bs-platform/lib/js/block.js");
 var $$String = require("bs-platform/lib/js/string.js");
+var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var Type$ReactTemplate = require("./Type.bs.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
@@ -41,6 +42,42 @@ Type$ReactTemplate.set_value("bind", /* Fonction */Block.__(11, [/* NativeF */Bl
                 var valueb = Utils$ReactTemplate.list_same_size(noms, value, /* Unit */0);
                 List.iter2(Type$ReactTemplate.set_value, noms, valueb);
                 return /* Unit */0;
+              })])]));
+
+Type$ReactTemplate.set_value("==", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_equal(value, valueb)]);
+              })])]));
+
+Type$ReactTemplate.set_value("!=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_notequal(value, valueb)]);
+              })])]));
+
+Type$ReactTemplate.set_value(">", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_greaterthan(value, valueb)]);
+              })])]));
+
+Type$ReactTemplate.set_value(">=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_greaterequal(value, valueb)]);
+              })])]));
+
+Type$ReactTemplate.set_value("<", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_lessthan(value, valueb)]);
+              })])]));
+
+Type$ReactTemplate.set_value("<=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(6, [Caml_obj.caml_lessequal(value, valueb)]);
               })])]));
 
 Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {

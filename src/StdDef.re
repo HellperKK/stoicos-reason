@@ -20,18 +20,56 @@ set_value("=", Fonction(NativeF(tokens => {
 
 set_value("assign", Fonction(NativeF(tokens => {
   let noms = look_at(tokens, 0) |> to_array |> List.map(to_sym);
-  let value = look_at(tokens, 1)
-  List.iter(x => set_value(x, value), noms)
-  Unit
+  let value = look_at(tokens, 1);
+  List.iter(x => set_value(x, value), noms);
+  Unit;
 })));
 
 set_value("bind", Fonction(NativeF(tokens => {
   let noms = look_at(tokens, 0) |> to_array |> List.map(to_sym);
-  let value = look_at(tokens, 1)|> to_array
-  let valueb = Utils.list_same_size(noms, value, Unit)
-  List.iter2((name, valeur) => set_value(name, valeur), noms, valueb)
-  Unit
+  let value = look_at(tokens, 1)|> to_array;
+  let valueb = Utils.list_same_size(noms, value, Unit);
+  List.iter2((name, valeur) => set_value(name, valeur), noms, valueb);
+  Unit;
 })));
+
+/* fonctions comparaison */
+set_value("==", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value == valueb);
+})));
+
+set_value("!=", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value != valueb);
+})));
+
+set_value(">", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value > valueb);
+})));
+
+set_value(">=", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value >= valueb);
+})));
+
+set_value("<", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value < valueb);
+})));
+
+set_value("<=", Fonction(NativeF(tokens => {
+  let value = look_at(tokens, 0);
+  let valueb = look_at(tokens, 1);
+  Booleen(value <= valueb);
+})));
+
 
 /* fonctions blocs */
 set_value("if", Fonction(NativeF(tokens => {
