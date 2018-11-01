@@ -2,9 +2,11 @@
 'use strict';
 
 var List = require("bs-platform/lib/js/list.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var $$String = require("bs-platform/lib/js/string.js");
 var Caml_format = require("bs-platform/lib/js/caml_format.js");
+var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
 function list_slice(min, max, liste) {
@@ -61,6 +63,23 @@ function list_same_size(liste, listeb, $$default) {
               }), liste);
 }
 
+function list_first(f, _liste) {
+  while(true) {
+    var liste = _liste;
+    if (liste) {
+      var head = liste[0];
+      if (Curry._1(f, head)) {
+        return Js_primitive.some(head);
+      } else {
+        _liste = liste[1];
+        continue ;
+      }
+    } else {
+      return undefined;
+    }
+  };
+}
+
 function string_slice(min, max, chaine) {
   var size = max - min | 0;
   return $$String.sub(chaine, min, size);
@@ -105,6 +124,7 @@ function super_float_of_string(chaine) {
 exports.list_slice = list_slice;
 exports.list_fetch = list_fetch;
 exports.list_same_size = list_same_size;
+exports.list_first = list_first;
 exports.string_slice = string_slice;
 exports.super_int_of_string = super_int_of_string;
 exports.super_float_of_string = super_float_of_string;
