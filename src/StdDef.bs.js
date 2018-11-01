@@ -54,6 +54,18 @@ Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Bloc
                 }
               })])]));
 
+Type$ReactTemplate.set_value("cond", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+                var conds = List.map(Type$ReactTemplate.to_array, tokens);
+                var elem = Utils$ReactTemplate.list_first((function (x) {
+                        return Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(x, 0, /* Unit */0));
+                      }), conds);
+                if (elem !== undefined) {
+                  return Utils$ReactTemplate.list_fetch(elem, 1, /* Unit */0);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
 Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
                 var args = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
                 var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));

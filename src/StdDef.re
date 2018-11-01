@@ -41,6 +41,15 @@ set_value("if", Fonction(NativeF(tokens => {
   bool ? tok_calc(bloc) : tok_calc(blocb)
 })));
 
+set_value("cond", Fonction(NativeF(tokens => {
+  let conds = List.map(to_array, tokens);
+  let elem = Utils.list_first(x => look_at(x, 0) |> to_bool, conds);
+  switch(elem){
+    |None => Unit
+    |Some(x) => look_at(x, 1);
+  };
+})));
+
 /* fonction construction */
 set_value("fun", Fonction(NativeF(tokens => {
   let args = look_at(tokens, 0) |> to_array |> List.map(to_sym);
