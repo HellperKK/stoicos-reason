@@ -8,7 +8,9 @@ let full_test = (reg, chaine) => switch(Js.Re.exec(chaine, reg)){
     let capts = Js.Re.captures(x);
     switch(Js.Nullable.toOption(capts[0])){
       |None => false
-      |Some(x) => x == chaine
+      |Some(x) => {
+        x == chaine;
+      };
     };
   };
 };
@@ -91,11 +93,15 @@ and to_token = chaine => switch(chaine){
     let temp = Utils.string_slice(1, String.length(x)-1, x) |> third_cut |> List.map(to_token);
     Bloc(temp);
   };
-  |x when full_test([%bs.re "/:[A-Za-z]+/"], x) => {
+  |x when full_test([%bs.re "/:[^\s]+/"], x) => {
     Symbol(Utils.string_slice(1, String.length(x), x))
   };
-  |x when full_test([%bs.re "/[A-Za-z]+/"], x) => Nom(x);
-  |_ => Unit
+  |x when full_test([%bs.re "/[^\s]+/"], x) => {
+    Nom(x)
+  };
+  |_ => {
+    Unit;
+  };
 };
 
 /* second filtre */
@@ -130,7 +136,9 @@ let find_first_char = (car, chaine) => {
 
 let rec first_cut = (car, chaine) => switch(find_first_char(car, chaine)){
   |None => [chaine];
-  |Some(i) => [String.sub(chaine,0, i), ...first_cut(car, String.sub(chaine, i+1, String.length(chaine)-i-1))]
+  |Some(i) => {
+    [String.sub(chaine,0, i), ...first_cut(car, String.sub(chaine, i+1, String.length(chaine)-i-1))]
+  };
 };
 
 let interpete = chaine => {

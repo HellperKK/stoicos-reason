@@ -158,9 +158,9 @@ function to_token(chaine) {
   } else if (Caml_string.get(chaine, 0) === /* "{" */123) {
     var temp$2 = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
     return /* Bloc */Block.__(8, [temp$2]);
-  } else if (full_test((/:[A-Za-z]+/), chaine)) {
+  } else if (full_test((/:[^\s]+/), chaine)) {
     return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
-  } else if (full_test((/[A-Za-z]+/), chaine)) {
+  } else if (full_test((/[^\s]+/), chaine)) {
     return /* Nom */Block.__(5, [chaine]);
   } else {
     return /* Unit */0;
