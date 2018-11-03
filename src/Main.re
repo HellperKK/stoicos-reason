@@ -8,9 +8,7 @@ let full_test = (reg, chaine) => switch(Js.Re.exec(chaine, reg)){
     let capts = Js.Re.captures(x);
     switch(Js.Nullable.toOption(capts[0])){
       |None => false
-      |Some(x) => {
-        x == chaine;
-      };
+      |Some(x) => x == chaine;
     };
   };
 };
