@@ -8,7 +8,7 @@ let full_test = (reg, chaine) => switch(Js.Re.exec(chaine, reg)){
     let capts = Js.Re.captures(x);
     switch(Js.Nullable.toOption(capts[0])){
       |None => false
-      |Some(x) => x == chaine;
+      |Some(xb) => xb == chaine;
     };
   };
 };
@@ -94,12 +94,8 @@ and to_token = chaine => switch(chaine){
   |x when full_test([%bs.re "/:[^\s]+/"], x) => {
     Symbol(Utils.string_slice(1, String.length(x), x))
   };
-  |x when full_test([%bs.re "/[^\s]+/"], x) => {
-    Nom(x)
-  };
-  |_ => {
-    Unit;
-  };
+  |x when full_test([%bs.re "/[^\s]+/"], x) => Nom(x);
+  |_ => Unit;
 };
 
 /* second filtre */
