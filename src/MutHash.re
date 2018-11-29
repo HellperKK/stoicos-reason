@@ -32,3 +32,14 @@ let rec replace = (hash, key, value) => switch(hash){
   |Branch((k, v), left, right) when k > key => Branch((k, v), replace(left, key, value), right);
   |Branch((k, v), left, right) => Branch((k, v), left, replace(right, key, value));
 };
+
+let rec fold_left = (hash, value, func) => switch(hash){
+  |Leaf => value;
+  |Branch((k, v), left, right) => {
+    let result = func(value, k, v);
+    let temp = fold_left(left, result, func);
+    fold_left(right, temp, func);
+  };
+};
+
+let pairs = hash => fold_left(hash, [], (memo, k, v) => [(k, v), ...memo])
