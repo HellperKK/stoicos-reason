@@ -42,4 +42,17 @@ let rec fold_left = (hash, value, func) => switch(hash){
   };
 };
 
-let pairs = hash => fold_left(hash, [], (memo, k, v) => [(k, v), ...memo])
+let pairs = hash => {
+  let temp = fold_left(hash, [], (memo, k, v) => [(k, v), ...memo]);
+  List.rev(temp);
+};
+
+let keys = hash => {
+  let temp = fold_left(hash, [], (memo, k, _) => [k, ...memo]);
+  List.rev(temp);
+};
+
+let values = hash => {
+  let temp = fold_left(hash, [], (memo, _, v) => [v, ...memo]);
+  List.rev(temp);
+};
