@@ -94,8 +94,9 @@ and to_token = chaine => switch(chaine){
   |x when full_test([%bs.re "/:[^\s]+/"], x) => {
     Symbol(Utils.string_slice(1, String.length(x), x))
   };
-  |x when full_test([%bs.re "/[^\s]+.[^\s]+/"], x) => {
-    Symbol(Utils.string_slice(1, String.length(x), x))
+  |x when full_test([%bs.re "/[^\s]+\.[^\s]+/"], x) => {
+    let noms = Utils.string_split('.', x);
+    NSpace(List.nth(noms, 0), List.nth(noms, 1))
   };
   |x when full_test([%bs.re "/[^\s]+/"], x) => Nom(x);
   |_ => Unit;
@@ -120,33 +121,15 @@ let second_cut = liste => {
   List.map((x) => List.map(String.trim, x) |> String.concat(" "), result);
 };
 
-
-/* premier filtre */
-let find_first_char = (car, chaine) => {
-  let rec aux = i => switch(chaine.[i]) {
-    |x when x == car => Some(i);
-    |_ when i == String.length(chaine)-1 => None;
-    |_ => aux(i + 1);
-  };
-  aux(0);
-};
-
-let rec first_cut = (car, chaine) => switch(find_first_char(car, chaine)){
-  |None => [chaine];
-  |Some(i) => {
-    [String.sub(chaine,0, i), ...first_cut(car, String.sub(chaine, i+1, String.length(chaine)-i-1))]
-  };
-};
-
 let interpete = chaine => {
   sortie := ""
   if (chaine != "") {
-    let code = first_cut('\n', chaine)
+    let code = Utils.string_split('\n', chaine)
       |> List.filter(x => (String.trim(x) != "") && (String.trim(x).[0] != '#'))
       |> second_cut
       |> List.map(x => x |> third_cut |> List.map(to_token));
     List.iter(x => x |> run |> ignore, code);
   }
-  ImutHash.test();
+  /* ImutHash.test(); */
   sortie^;
 };

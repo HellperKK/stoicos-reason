@@ -8,7 +8,6 @@ var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
-var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
 var StringDef$ReactTemplate = require("./StringDef.bs.js");
 
 function first_char_at(liste, i) {
@@ -161,8 +160,12 @@ function to_token(chaine) {
     return /* Bloc */Block.__(9, [temp$2]);
   } else if (full_test((/:[^\s]+/), chaine)) {
     return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
-  } else if (full_test((/[^\s]+.[^\s]+/), chaine)) {
-    return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
+  } else if (full_test((/[^\s]+\.[^\s]+/), chaine)) {
+    var noms = Utils$ReactTemplate.string_split(/* "." */46, chaine);
+    return /* NSpace */Block.__(6, [
+              List.nth(noms, 0),
+              List.nth(noms, 1)
+            ]);
   } else if (full_test((/[^\s]+/), chaine)) {
     return /* Nom */Block.__(5, [chaine]);
   } else {
@@ -213,38 +216,6 @@ function second_cut(liste) {
               }), result);
 }
 
-function find_first_char(car, chaine) {
-  var _i = 0;
-  while(true) {
-    var i = _i;
-    var x = Caml_string.get(chaine, i);
-    if (x === car) {
-      return i;
-    } else if (i === (chaine.length - 1 | 0)) {
-      return undefined;
-    } else {
-      _i = i + 1 | 0;
-      continue ;
-    }
-  };
-}
-
-function first_cut(car, chaine) {
-  var match = find_first_char(car, chaine);
-  if (match !== undefined) {
-    var i = match;
-    return /* :: */[
-            $$String.sub(chaine, 0, i),
-            first_cut(car, $$String.sub(chaine, i + 1 | 0, (chaine.length - i | 0) - 1 | 0))
-          ];
-  } else {
-    return /* :: */[
-            chaine,
-            /* [] */0
-          ];
-  }
-}
-
 function interpete(chaine) {
   StringDef$ReactTemplate.sortie[0] = "";
   if (chaine !== "") {
@@ -256,13 +227,12 @@ function interpete(chaine) {
                       } else {
                         return false;
                       }
-                    }))(first_cut(/* "\n" */10, chaine))));
+                    }))(Utils$ReactTemplate.string_split(/* "\n" */10, chaine))));
     List.iter((function (x) {
             StringDef$ReactTemplate.run(x);
             return /* () */0;
           }), code);
   }
-  ImutHash$ReactTemplate.test(/* () */0);
   return StringDef$ReactTemplate.sortie[0];
 }
 
@@ -344,7 +314,5 @@ exports.third_cut = third_cut;
 exports.to_token = to_token;
 exports.look_untill = look_untill;
 exports.second_cut = second_cut;
-exports.find_first_char = find_first_char;
-exports.first_cut = first_cut;
 exports.interpete = interpete;
 /* StringDef-ReactTemplate Not a pure module */
