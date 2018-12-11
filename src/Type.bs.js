@@ -9,6 +9,7 @@ var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
+var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
 
 var vars = /* record */[/* contents : :: */[
     Hashtbl.create(undefined, 100),
@@ -70,10 +71,25 @@ function get_stack() {
 }
 
 function get_var(tok) {
-  if (typeof tok === "number" || tok.tag !== 5) {
+  if (typeof tok === "number") {
     return tok;
   } else {
-    return get_value(tok[0]);
+    switch (tok.tag | 0) {
+      case 5 : 
+          return get_value(tok[0]);
+      case 6 : 
+          var value = get_value(tok[0]);
+          var hash;
+          hash = typeof value === "number" || value.tag !== 13 ? ImutHash$ReactTemplate.empty : value[0];
+          var match = ImutHash$ReactTemplate.find_opt(tok[1], hash);
+          if (match !== undefined) {
+            return match;
+          } else {
+            return /* Unit */0;
+          }
+      default:
+        return tok;
+    }
   }
 }
 
@@ -151,7 +167,7 @@ function to_string(tok) {
       case 3 : 
       case 4 : 
           return tok[0];
-      case 6 : 
+      case 7 : 
           return Pervasives.string_of_bool(tok[0]);
       default:
         return "";
@@ -173,7 +189,7 @@ function to_sym(tok) {
       case 3 : 
       case 4 : 
           return tok[0];
-      case 6 : 
+      case 7 : 
           return Pervasives.string_of_bool(tok[0]);
       default:
         return "";
@@ -184,7 +200,7 @@ function to_sym(tok) {
 function to_bool(tok) {
   if (typeof tok === "number") {
     return false;
-  } else if (tok.tag === 6) {
+  } else if (tok.tag === 7) {
     return tok[0];
   } else {
     return true;
@@ -192,7 +208,7 @@ function to_bool(tok) {
 }
 
 function to_array(tok) {
-  if (typeof tok === "number" || tok.tag !== 10) {
+  if (typeof tok === "number" || tok.tag !== 11) {
     return /* :: */[
             tok,
             /* [] */0
@@ -203,7 +219,7 @@ function to_array(tok) {
 }
 
 function to_block(tok) {
-  if (typeof tok === "number" || tok.tag !== 8) {
+  if (typeof tok === "number" || tok.tag !== 9) {
     return /* :: */[
             tok,
             /* [] */0
@@ -215,7 +231,7 @@ function to_block(tok) {
 
 function to_function(tok) {
   var exit = 0;
-  if (typeof tok === "number" || tok.tag !== 11) {
+  if (typeof tok === "number" || tok.tag !== 12) {
     exit = 1;
   } else {
     return tok[0];
@@ -245,10 +261,10 @@ function tok_get(token) {
     return token;
   } else {
     switch (token.tag | 0) {
-      case 7 : 
+      case 8 : 
           return run(token[0]);
-      case 9 : 
-          return /* Tableau */Block.__(10, [List.map((function (tok) {
+      case 10 : 
+          return /* Tableau */Block.__(11, [List.map((function (tok) {
                             return get_var(tok_get(tok));
                           }), token[0])]);
       default:

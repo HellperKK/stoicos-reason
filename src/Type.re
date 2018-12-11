@@ -19,13 +19,14 @@ type token =
   |Chaine(string)
   |Symbol(string)
   |Nom(string)
+  |NSpace(string, string)
   |Booleen(bool)
   |Proce(list(token))
   |Bloc(list(token))
   |TableauLex(list(token))
   |Tableau(list(token))
   |Fonction(fonction)
-  |Struct(Hashtbl.t(string, token))
+  |Struct(ImutHash.t(string, token))
   |Unit
 
 and fonction =
@@ -67,6 +68,17 @@ let get_stack = () => switch(vars^){
 
 let get_var = tok => switch(tok){
   |Nom(x) => get_value(x)
+  |NSpace(x, sub) => {
+    let value = get_value(x);
+    let hash = switch(value){
+      |Struct(x) => x;
+      |_ => ImutHash.empty;
+    }
+    switch(ImutHash.find_opt(sub, hash)){
+      |None => Unit;
+      |Some(x) => x;
+    }
+  }
   |x => x
 };
 
