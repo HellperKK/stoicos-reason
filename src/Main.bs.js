@@ -245,19 +245,21 @@ function first_cut(car, chaine) {
 
 function interpete(chaine) {
   StdDef$ReactTemplate.sortie[0] = "";
-  var code = List.map((function (x) {
-          return List.map(to_token, third_cut(x));
-        }), second_cut(List.filter((function (x) {
-                    if ($$String.trim(x) !== "") {
-                      return Caml_string.get($$String.trim(x), 0) !== /* "#" */35;
-                    } else {
-                      return false;
-                    }
-                  }))(first_cut(/* "\n" */10, chaine))));
-  List.iter((function (x) {
-          StdDef$ReactTemplate.run(x);
-          return /* () */0;
-        }), code);
+  if (chaine !== "") {
+    var code = List.map((function (x) {
+            return List.map(to_token, third_cut(x));
+          }), second_cut(List.filter((function (x) {
+                      if ($$String.trim(x) !== "") {
+                        return Caml_string.get($$String.trim(x), 0) !== /* "#" */35;
+                      } else {
+                        return false;
+                      }
+                    }))(first_cut(/* "\n" */10, chaine))));
+    List.iter((function (x) {
+            StdDef$ReactTemplate.run(x);
+            return /* () */0;
+          }), code);
+  }
   ImutHash$ReactTemplate.test(/* () */0);
   return StdDef$ReactTemplate.sortie[0];
 }

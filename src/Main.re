@@ -137,11 +137,13 @@ let rec first_cut = (car, chaine) => switch(find_first_char(car, chaine)){
 
 let interpete = chaine => {
   sortie := ""
-  let code = first_cut('\n', chaine)
-    |> List.filter(x => (String.trim(x) != "") && (String.trim(x).[0] != '#'))
-    |> second_cut
-    |> List.map(x => x |> third_cut |> List.map(to_token));
-  List.iter(x => x |> run |> ignore, code);
+  if (chaine != "") {
+    let code = first_cut('\n', chaine)
+      |> List.filter(x => (String.trim(x) != "") && (String.trim(x).[0] != '#'))
+      |> second_cut
+      |> List.map(x => x |> third_cut |> List.map(to_token));
+    List.iter(x => x |> run |> ignore, code);
+  }
   ImutHash.test();
   sortie^;
 };
