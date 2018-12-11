@@ -199,9 +199,28 @@ function values(hash) {
                   }), hash));
 }
 
+function iter(fn, hash) {
+  return fold_left(/* () */0, (function (_, k, v) {
+                return Curry._2(fn, k, v);
+              }), hash);
+}
+
 function test() {
   var test_val = add("man", 4, add("doe", 3, add("john", 2, add("hello", 1, /* Leaf */0))));
-  console.log(test_val);
+  iter((function (k, _) {
+          console.log(k);
+          return /* () */0;
+        }), test_val);
+  iter((function (_, v) {
+          console.log(v);
+          return /* () */0;
+        }), test_val);
+  console.log(find_opt("john", test_val));
+  console.log(pairs(test_val));
+  console.log(keys(test_val));
+  console.log(values(test_val));
+  console.log(mem("hello", test_val));
+  console.log(mem("hellos", test_val));
   return /* () */0;
 }
 
@@ -217,5 +236,6 @@ exports.fold_left = fold_left;
 exports.pairs = pairs;
 exports.keys = keys;
 exports.values = values;
+exports.iter = iter;
 exports.test = test;
 /* No side effect */

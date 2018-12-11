@@ -59,11 +59,22 @@ let values = hash => {
   List.rev(temp);
 };
 
+let iter = (fn, hash) => {
+  fold_left((), (_, k, v) => fn(k, v), hash);
+}
+
 let test = () => {
   let test_val:t(string, int) = empty
-  |> add("hello", 1)
-  |> add("john", 2)
-  |> add("doe", 3)
-  |> add("man", 4);
-  Js.log(test_val);
+    |> add("hello", 1)
+    |> add("john", 2)
+    |> add("doe", 3)
+    |> add("man", 4);
+  iter((k, _) => Js.log(k), test_val);
+  iter((_, v) => Js.log(v), test_val);
+  Js.log(find_opt("john", test_val));
+  Js.log(pairs(test_val));
+  Js.log(keys(test_val));
+  Js.log(values(test_val));
+  Js.log(mem("hello", test_val));
+  Js.log(mem("hellos", test_val));
 }
