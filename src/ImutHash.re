@@ -60,5 +60,10 @@ let values = hash => {
 };
 
 let test = () => {
-
+  let test_val:t(string, int) = empty
+  |> add("hello", 1)
+  |> add("john", 2)
+  |> add("doe", 3)
+  |> add("man", 4);
+  Js.log(test_val);
 }

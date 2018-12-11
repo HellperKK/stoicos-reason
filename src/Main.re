@@ -142,5 +142,6 @@ let interpete = chaine => {
     |> second_cut
     |> List.map(x => x |> third_cut |> List.map(to_token));
   List.iter(x => x |> run |> ignore, code);
+  ImutHash.test();
   sortie^;
 };

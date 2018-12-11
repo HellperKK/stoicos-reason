@@ -5,7 +5,6 @@ var List = require("bs-platform/lib/js/list.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
-var CamlinternalOO = require("bs-platform/lib/js/camlinternalOO.js");
 
 function singleton(key, value) {
   return /* Branch */[
@@ -200,25 +199,10 @@ function values(hash) {
                   }), hash));
 }
 
-var class_tables = [
-  0,
-  0,
-  0
-];
-
 function test() {
-  if (!class_tables[0]) {
-    var $$class = CamlinternalOO.create_table(0);
-    var env = CamlinternalOO.new_variable($$class, "");
-    var env_init = function (env$1) {
-      var self = CamlinternalOO.create_object_opt(0, $$class);
-      self[env] = env$1;
-      return self;
-    };
-    CamlinternalOO.init_class($$class);
-    class_tables[0] = env_init;
-  }
-  return Curry._1(class_tables[0], 0);
+  var test_val = add("man", 4, add("doe", 3, add("john", 2, add("hello", 1, /* Leaf */0))));
+  console.log(test_val);
+  return /* () */0;
 }
 
 var empty = /* Leaf */0;

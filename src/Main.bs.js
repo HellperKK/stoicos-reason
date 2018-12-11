@@ -9,6 +9,7 @@ var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
 var StdDef$ReactTemplate = require("./StdDef.bs.js");
+var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
 
 function first_char_at(liste, i) {
   return Caml_string.get(List.nth(liste, i), 0);
@@ -257,6 +258,7 @@ function interpete(chaine) {
           StdDef$ReactTemplate.run(x);
           return /* () */0;
         }), code);
+  ImutHash$ReactTemplate.test(/* () */0);
   return StdDef$ReactTemplate.sortie[0];
 }
 
