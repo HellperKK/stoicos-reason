@@ -1,3 +1,5 @@
+/* Module for an Immutable Hash */
+
 type t('a, 'b) =
   |Leaf
   |Branch(('a, 'b), t('a, 'b), t('a, 'b));
