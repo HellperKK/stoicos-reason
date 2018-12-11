@@ -34,6 +34,24 @@ let string_slice = (min, max, chaine) => {
   String.sub(chaine, min, size)
 };
 
+/* finds the firts caracter car un a string chaine and returns its index in a option */
+let find_first_char = (car, chaine) => {
+  let rec aux = i => switch(chaine.[i]) {
+    |x when x == car => Some(i);
+    |_ when i == String.length(chaine)-1 => None;
+    |_ => aux(i + 1);
+  };
+  aux(0);
+};
+
+/* splits a string chaine with car as a separator */
+let rec string_split = (car, chaine) => switch(find_first_char(car, chaine)){
+  |None => [chaine];
+  |Some(i) => {
+    [String.sub(chaine,0, i), ...string_split(car, String.sub(chaine, i+1, String.length(chaine)-i-1))]
+  };
+};
+
 /* Aliias of string_of_int with failure coverage */
 let super_int_of_string = chaine => try(int_of_string(chaine)){
   |Failure("int_of_string") => 0

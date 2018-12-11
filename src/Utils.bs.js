@@ -6,6 +6,7 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var Js_exn = require("bs-platform/lib/js/js_exn.js");
 var $$String = require("bs-platform/lib/js/string.js");
 var Caml_format = require("bs-platform/lib/js/caml_format.js");
+var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
@@ -85,6 +86,38 @@ function string_slice(min, max, chaine) {
   return $$String.sub(chaine, min, size);
 }
 
+function find_first_char(car, chaine) {
+  var _i = 0;
+  while(true) {
+    var i = _i;
+    var x = Caml_string.get(chaine, i);
+    if (x === car) {
+      return i;
+    } else if (i === (chaine.length - 1 | 0)) {
+      return undefined;
+    } else {
+      _i = i + 1 | 0;
+      continue ;
+    }
+  };
+}
+
+function string_split(car, chaine) {
+  var match = find_first_char(car, chaine);
+  if (match !== undefined) {
+    var i = match;
+    return /* :: */[
+            $$String.sub(chaine, 0, i),
+            string_split(car, $$String.sub(chaine, i + 1 | 0, (chaine.length - i | 0) - 1 | 0))
+          ];
+  } else {
+    return /* :: */[
+            chaine,
+            /* [] */0
+          ];
+  }
+}
+
 function super_int_of_string(chaine) {
   try {
     return Caml_format.caml_int_of_string(chaine);
@@ -126,6 +159,8 @@ exports.list_fetch = list_fetch;
 exports.list_same_size = list_same_size;
 exports.list_first = list_first;
 exports.string_slice = string_slice;
+exports.find_first_char = find_first_char;
+exports.string_split = string_split;
 exports.super_int_of_string = super_int_of_string;
 exports.super_float_of_string = super_float_of_string;
 /* No side effect */
