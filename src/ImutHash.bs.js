@@ -5,6 +5,7 @@ var List = require("bs-platform/lib/js/list.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
+var CamlinternalOO = require("bs-platform/lib/js/camlinternalOO.js");
 
 function singleton(key, value) {
   return /* Branch */[
@@ -17,7 +18,7 @@ function singleton(key, value) {
         ];
 }
 
-function mem(_hash, key) {
+function mem(key, _hash) {
   while(true) {
     var hash = _hash;
     if (hash) {
@@ -37,7 +38,7 @@ function mem(_hash, key) {
   };
 }
 
-function find_opt(_hash, key) {
+function find_opt(key, _hash) {
   while(true) {
     var hash = _hash;
     if (hash) {
@@ -58,7 +59,7 @@ function find_opt(_hash, key) {
   };
 }
 
-function add(hash, key, value) {
+function add(key, value, hash) {
   if (hash) {
     var right = hash[2];
     var left = hash[1];
@@ -80,7 +81,7 @@ function add(hash, key, value) {
                 k,
                 v
               ],
-              add(left, key, value),
+              add(key, value, left),
               right
             ];
     } else {
@@ -90,7 +91,7 @@ function add(hash, key, value) {
                 v
               ],
               left,
-              add(right, key, value)
+              add(key, value, right)
             ];
     }
   } else {
@@ -105,42 +106,40 @@ function add(hash, key, value) {
   }
 }
 
-function replace(hash, key, value) {
+function replace(key, value, hash) {
   if (hash) {
     var right = hash[2];
     var left = hash[1];
     var match = hash[0];
+    var v = match[1];
     var k = match[0];
     if (Caml_obj.caml_equal(k, key)) {
       return /* Branch */[
               /* tuple */[
-                key,
-                value
+                k,
+                v
               ],
               left,
               right
             ];
+    } else if (Caml_obj.caml_greaterthan(k, key)) {
+      return /* Branch */[
+              /* tuple */[
+                k,
+                v
+              ],
+              replace(key, value, left),
+              right
+            ];
     } else {
-      var v = match[1];
-      if (Caml_obj.caml_greaterthan(k, key)) {
-        return /* Branch */[
-                /* tuple */[
-                  k,
-                  v
-                ],
-                replace(left, key, value),
-                right
-              ];
-      } else {
-        return /* Branch */[
-                /* tuple */[
-                  k,
-                  v
-                ],
-                left,
-                replace(right, key, value)
-              ];
-      }
+      return /* Branch */[
+              /* tuple */[
+                k,
+                v
+              ],
+              left,
+              replace(key, value, right)
+            ];
     }
   } else {
     return /* Branch */[
@@ -154,16 +153,16 @@ function replace(hash, key, value) {
   }
 }
 
-function fold_left(_hash, _value, func) {
+function fold_left(_value, func, _hash) {
   while(true) {
-    var value = _value;
     var hash = _hash;
+    var value = _value;
     if (hash) {
       var match = hash[0];
       var result = Curry._3(func, value, match[0], match[1]);
-      var temp = fold_left(hash[1], result, func);
-      _value = temp;
+      var temp = fold_left(result, func, hash[1]);
       _hash = hash[2];
+      _value = temp;
       continue ;
     } else {
       return value;
@@ -172,7 +171,7 @@ function fold_left(_hash, _value, func) {
 }
 
 function pairs(hash) {
-  return List.rev(fold_left(hash, /* [] */0, (function (memo, k, v) {
+  return List.rev(fold_left(/* [] */0, (function (memo, k, v) {
                     return /* :: */[
                             /* tuple */[
                               k,
@@ -180,25 +179,46 @@ function pairs(hash) {
                             ],
                             memo
                           ];
-                  })));
+                  }), hash));
 }
 
 function keys(hash) {
-  return List.rev(fold_left(hash, /* [] */0, (function (memo, k, _) {
+  return List.rev(fold_left(/* [] */0, (function (memo, k, _) {
                     return /* :: */[
                             k,
                             memo
                           ];
-                  })));
+                  }), hash));
 }
 
 function values(hash) {
-  return List.rev(fold_left(hash, /* [] */0, (function (memo, _, v) {
+  return List.rev(fold_left(/* [] */0, (function (memo, _, v) {
                     return /* :: */[
                             v,
                             memo
                           ];
-                  })));
+                  }), hash));
+}
+
+var class_tables = [
+  0,
+  0,
+  0
+];
+
+function test() {
+  if (!class_tables[0]) {
+    var $$class = CamlinternalOO.create_table(0);
+    var env = CamlinternalOO.new_variable($$class, "");
+    var env_init = function (env$1) {
+      var self = CamlinternalOO.create_object_opt(0, $$class);
+      self[env] = env$1;
+      return self;
+    };
+    CamlinternalOO.init_class($$class);
+    class_tables[0] = env_init;
+  }
+  return Curry._1(class_tables[0], 0);
 }
 
 var empty = /* Leaf */0;
@@ -213,4 +233,5 @@ exports.fold_left = fold_left;
 exports.pairs = pairs;
 exports.keys = keys;
 exports.values = values;
+exports.test = test;
 /* No side effect */
