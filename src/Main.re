@@ -1,4 +1,4 @@
-include StdDef;
+include StringDef;
 
 let first_char_at = (liste, i) => List.nth(liste, i).[0];
 
@@ -92,6 +92,9 @@ and to_token = chaine => switch(chaine){
     Bloc(temp);
   };
   |x when full_test([%bs.re "/:[^\s]+/"], x) => {
+    Symbol(Utils.string_slice(1, String.length(x), x))
+  };
+  |x when full_test([%bs.re "/[^\s]+.[^\s]+/"], x) => {
     Symbol(Utils.string_slice(1, String.length(x), x))
   };
   |x when full_test([%bs.re "/[^\s]+/"], x) => Nom(x);

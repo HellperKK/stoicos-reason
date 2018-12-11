@@ -8,8 +8,8 @@ var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
-var StdDef$ReactTemplate = require("./StdDef.bs.js");
 var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
+var StringDef$ReactTemplate = require("./StringDef.bs.js");
 
 function first_char_at(liste, i) {
   return Caml_string.get(List.nth(liste, i), 0);
@@ -145,21 +145,23 @@ function to_token(chaine) {
   } else if (full_test((/[1-9]*[0-9].[0-9]*/), chaine)) {
     return /* Flottant */Block.__(1, [Utils$ReactTemplate.super_float_of_string(chaine)]);
   } else if (chaine === "true" || chaine === "false") {
-    return /* Booleen */Block.__(6, [Pervasives.bool_of_string(chaine)]);
+    return /* Booleen */Block.__(7, [Pervasives.bool_of_string(chaine)]);
   } else if (Caml_string.get(chaine, 0) === /* "\"" */34) {
     return /* Chaine */Block.__(3, [Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)]);
   } else if (Caml_string.get(chaine, 0) === /* "'" */39) {
     return /* Carac */Block.__(2, [Caml_string.get(chaine, 1)]);
   } else if (Caml_string.get(chaine, 0) === /* "(" */40) {
     var temp = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
-    return /* Proce */Block.__(7, [temp]);
+    return /* Proce */Block.__(8, [temp]);
   } else if (Caml_string.get(chaine, 0) === /* "[" */91) {
     var temp$1 = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
-    return /* TableauLex */Block.__(9, [temp$1]);
+    return /* TableauLex */Block.__(10, [temp$1]);
   } else if (Caml_string.get(chaine, 0) === /* "{" */123) {
     var temp$2 = List.map(to_token, third_cut(Utils$ReactTemplate.string_slice(1, chaine.length - 1 | 0, chaine)));
-    return /* Bloc */Block.__(8, [temp$2]);
+    return /* Bloc */Block.__(9, [temp$2]);
   } else if (full_test((/:[^\s]+/), chaine)) {
+    return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
+  } else if (full_test((/[^\s]+.[^\s]+/), chaine)) {
     return /* Symbol */Block.__(4, [Utils$ReactTemplate.string_slice(1, chaine.length, chaine)]);
   } else if (full_test((/[^\s]+/), chaine)) {
     return /* Nom */Block.__(5, [chaine]);
@@ -244,7 +246,7 @@ function first_cut(car, chaine) {
 }
 
 function interpete(chaine) {
-  StdDef$ReactTemplate.sortie[0] = "";
+  StringDef$ReactTemplate.sortie[0] = "";
   if (chaine !== "") {
     var code = List.map((function (x) {
             return List.map(to_token, third_cut(x));
@@ -256,57 +258,59 @@ function interpete(chaine) {
                       }
                     }))(first_cut(/* "\n" */10, chaine))));
     List.iter((function (x) {
-            StdDef$ReactTemplate.run(x);
+            StringDef$ReactTemplate.run(x);
             return /* () */0;
           }), code);
   }
   ImutHash$ReactTemplate.test(/* () */0);
-  return StdDef$ReactTemplate.sortie[0];
+  return StringDef$ReactTemplate.sortie[0];
 }
 
-var vars = StdDef$ReactTemplate.vars;
+var vars = StringDef$ReactTemplate.vars;
 
-var get_value = StdDef$ReactTemplate.get_value;
+var get_value = StringDef$ReactTemplate.get_value;
 
-var set_value = StdDef$ReactTemplate.set_value;
+var set_value = StringDef$ReactTemplate.set_value;
 
-var add_stack = StdDef$ReactTemplate.add_stack;
+var add_stack = StringDef$ReactTemplate.add_stack;
 
-var remove_stack = StdDef$ReactTemplate.remove_stack;
+var remove_stack = StringDef$ReactTemplate.remove_stack;
 
-var get_stack = StdDef$ReactTemplate.get_stack;
+var get_stack = StringDef$ReactTemplate.get_stack;
 
-var get_var = StdDef$ReactTemplate.get_var;
+var get_var = StringDef$ReactTemplate.get_var;
 
-var sortie = StdDef$ReactTemplate.sortie;
+var sortie = StringDef$ReactTemplate.sortie;
 
-var to_int = StdDef$ReactTemplate.to_int;
+var to_int = StringDef$ReactTemplate.to_int;
 
-var to_float = StdDef$ReactTemplate.to_float;
+var to_float = StringDef$ReactTemplate.to_float;
 
-var to_char = StdDef$ReactTemplate.to_char;
+var to_char = StringDef$ReactTemplate.to_char;
 
-var to_string = StdDef$ReactTemplate.to_string;
+var to_string = StringDef$ReactTemplate.to_string;
 
-var to_sym = StdDef$ReactTemplate.to_sym;
+var to_sym = StringDef$ReactTemplate.to_sym;
 
-var to_bool = StdDef$ReactTemplate.to_bool;
+var to_bool = StringDef$ReactTemplate.to_bool;
 
-var to_array = StdDef$ReactTemplate.to_array;
+var to_array = StringDef$ReactTemplate.to_array;
 
-var to_block = StdDef$ReactTemplate.to_block;
+var to_block = StringDef$ReactTemplate.to_block;
 
-var to_function = StdDef$ReactTemplate.to_function;
+var to_function = StringDef$ReactTemplate.to_function;
 
-var run = StdDef$ReactTemplate.run;
+var run = StringDef$ReactTemplate.run;
 
-var tok_get = StdDef$ReactTemplate.tok_get;
+var tok_get = StringDef$ReactTemplate.tok_get;
 
-var tok_calc = StdDef$ReactTemplate.tok_calc;
+var tok_calc = StringDef$ReactTemplate.tok_calc;
 
-var run_fun = StdDef$ReactTemplate.run_fun;
+var run_fun = StringDef$ReactTemplate.run_fun;
 
-var look_at = StdDef$ReactTemplate.look_at;
+var look_at = StringDef$ReactTemplate.look_at;
+
+var string_mod = StringDef$ReactTemplate.string_mod;
 
 exports.vars = vars;
 exports.get_value = get_value;
@@ -330,6 +334,7 @@ exports.tok_get = tok_get;
 exports.tok_calc = tok_calc;
 exports.run_fun = run_fun;
 exports.look_at = look_at;
+exports.string_mod = string_mod;
 exports.first_char_at = first_char_at;
 exports.full_test = full_test;
 exports.find_next_char = find_next_char;
@@ -342,4 +347,4 @@ exports.second_cut = second_cut;
 exports.find_first_char = find_first_char;
 exports.first_cut = first_cut;
 exports.interpete = interpete;
-/* StdDef-ReactTemplate Not a pure module */
+/* StringDef-ReactTemplate Not a pure module */

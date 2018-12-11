@@ -13,21 +13,21 @@ function look_at(liste, index) {
   return Utils$ReactTemplate.list_fetch(liste, index, /* Unit */0);
 }
 
-Type$ReactTemplate.set_value("print", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("print", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var chaines = List.map(Type$ReactTemplate.to_string, tokens);
                 var chaine = $$String.concat(" ", chaines);
                 Type$ReactTemplate.sortie[0] = Type$ReactTemplate.sortie[0] + chaine;
                 return /* Chaine */Block.__(3, [chaine]);
               })])]));
 
-Type$ReactTemplate.set_value("=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var name = Type$ReactTemplate.to_sym(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
                 var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
                 Type$ReactTemplate.set_value(name, value);
                 return /* Unit */0;
               })])]));
 
-Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
                 var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
                 List.iter((function (x) {
@@ -36,7 +36,7 @@ Type$ReactTemplate.set_value("assign", /* Fonction */Block.__(11, [/* NativeF */
                 return /* Unit */0;
               })])]));
 
-Type$ReactTemplate.set_value("bind", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("bind", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var noms = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
                 var value = Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
                 var valueb = Utils$ReactTemplate.list_same_size(noms, value, /* Unit */0);
@@ -44,43 +44,43 @@ Type$ReactTemplate.set_value("bind", /* Fonction */Block.__(11, [/* NativeF */Bl
                 return /* Unit */0;
               })])]));
 
-Type$ReactTemplate.set_value("==", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("==", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_equal(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_equal(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value("!=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("!=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_notequal(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_notequal(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value(">", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value(">", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_greaterthan(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_greaterthan(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value(">=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value(">=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_greaterequal(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_greaterequal(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value("<", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("<", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_lessthan(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_lessthan(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value("<=", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("<=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
                 var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
-                return /* Booleen */Block.__(6, [Caml_obj.caml_lessequal(value, valueb)]);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_lessequal(value, valueb)]);
               })])]));
 
-Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("if", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
                 var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
                 var blocb = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 2, /* Unit */0));
@@ -91,7 +91,7 @@ Type$ReactTemplate.set_value("if", /* Fonction */Block.__(11, [/* NativeF */Bloc
                 }
               })])]));
 
-Type$ReactTemplate.set_value("cond", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("cond", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var conds = List.map(Type$ReactTemplate.to_array, tokens);
                 var elem = Utils$ReactTemplate.list_first((function (x) {
                         return Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(x, 0, /* Unit */0));
@@ -103,21 +103,21 @@ Type$ReactTemplate.set_value("cond", /* Fonction */Block.__(11, [/* NativeF */Bl
                 }
               })])]));
 
-Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("fun", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var args = List.map(Type$ReactTemplate.to_sym, Type$ReactTemplate.to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
                 var bloc = Type$ReactTemplate.to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
-                return /* Fonction */Block.__(11, [/* CustomF */Block.__(1, [
+                return /* Fonction */Block.__(12, [/* CustomF */Block.__(1, [
                               args,
                               bloc
                             ])]);
               })])]));
 
-Type$ReactTemplate.set_value("not", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("not", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var bool = Type$ReactTemplate.to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                return /* Booleen */Block.__(6, [!bool]);
+                return /* Booleen */Block.__(7, [!bool]);
               })])]));
 
-Type$ReactTemplate.set_value("or", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("or", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           if (prim) {
@@ -126,13 +126,13 @@ Type$ReactTemplate.set_value("or", /* Fonction */Block.__(11, [/* NativeF */Bloc
                             return prim$1;
                           }
                         }), Type$ReactTemplate.to_bool(tokens[0]), List.map(Type$ReactTemplate.to_bool, tokens[1]));
-                  return /* Booleen */Block.__(6, [result]);
+                  return /* Booleen */Block.__(7, [result]);
                 } else {
                   return /* Unit */0;
                 }
               })])]));
 
-Type$ReactTemplate.set_value("and", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("and", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           if (prim) {
@@ -141,31 +141,31 @@ Type$ReactTemplate.set_value("and", /* Fonction */Block.__(11, [/* NativeF */Blo
                             return false;
                           }
                         }), Type$ReactTemplate.to_bool(tokens[0]), List.map(Type$ReactTemplate.to_bool, tokens[1]));
-                  return /* Booleen */Block.__(6, [result]);
+                  return /* Booleen */Block.__(7, [result]);
                 } else {
                   return /* Unit */0;
                 }
               })])]));
 
-Type$ReactTemplate.set_value("^", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("^", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var chaines = List.map(Type$ReactTemplate.to_string, tokens);
                 var chaine = $$String.concat("", chaines);
                 return /* Chaine */Block.__(3, [chaine]);
               })])]));
 
-Type$ReactTemplate.set_value("+", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("+", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var result = List.fold_left((function (prim, prim$1) {
                         return prim + prim$1 | 0;
                       }), 0, List.map(Type$ReactTemplate.to_int, tokens));
                 return /* Entier */Block.__(0, [result]);
               })])]));
 
-Type$ReactTemplate.set_value("*", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("*", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var result = List.fold_left(Caml_int32.imul, 1, List.map(Type$ReactTemplate.to_int, tokens));
                 return /* Entier */Block.__(0, [result]);
               })])]));
 
-Type$ReactTemplate.set_value("-", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("-", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           return prim - prim$1 | 0;
@@ -176,7 +176,7 @@ Type$ReactTemplate.set_value("-", /* Fonction */Block.__(11, [/* NativeF */Block
                 }
               })])]));
 
-Type$ReactTemplate.set_value("/", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("/", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left(Caml_int32.div, Type$ReactTemplate.to_int(tokens[0]), List.map(Type$ReactTemplate.to_int, tokens[1]));
                   return /* Entier */Block.__(0, [result]);
@@ -185,7 +185,7 @@ Type$ReactTemplate.set_value("/", /* Fonction */Block.__(11, [/* NativeF */Block
                 }
               })])]));
 
-Type$ReactTemplate.set_value("%", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("%", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left(Caml_int32.mod_, Type$ReactTemplate.to_int(tokens[0]), List.map(Type$ReactTemplate.to_int, tokens[1]));
                   return /* Entier */Block.__(0, [result]);
@@ -194,21 +194,21 @@ Type$ReactTemplate.set_value("%", /* Fonction */Block.__(11, [/* NativeF */Block
                 }
               })])]));
 
-Type$ReactTemplate.set_value("+.", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("+.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var result = List.fold_left((function (prim, prim$1) {
                         return prim + prim$1;
                       }), 0, List.map(Type$ReactTemplate.to_float, tokens));
                 return /* Flottant */Block.__(1, [result]);
               })])]));
 
-Type$ReactTemplate.set_value("*.", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("*.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var result = List.fold_left((function (prim, prim$1) {
                         return prim * prim$1;
                       }), 1.0, List.map(Type$ReactTemplate.to_float, tokens));
                 return /* Flottant */Block.__(1, [result]);
               })])]));
 
-Type$ReactTemplate.set_value("-.", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("-.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           return prim - prim$1;
@@ -219,7 +219,7 @@ Type$ReactTemplate.set_value("-.", /* Fonction */Block.__(11, [/* NativeF */Bloc
                 }
               })])]));
 
-Type$ReactTemplate.set_value("/.", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("/.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           return prim / prim$1;
@@ -230,7 +230,7 @@ Type$ReactTemplate.set_value("/.", /* Fonction */Block.__(11, [/* NativeF */Bloc
                 }
               })])]));
 
-Type$ReactTemplate.set_value("%.", /* Fonction */Block.__(11, [/* NativeF */Block.__(0, [(function (tokens) {
+Type$ReactTemplate.set_value("%.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 if (tokens) {
                   var result = List.fold_left((function (prim, prim$1) {
                           return prim % prim$1;
