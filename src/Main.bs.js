@@ -141,7 +141,7 @@ function third_cut(chaine) {
 function to_token(chaine) {
   if (full_test((/[1-9]*[0-9]/), chaine)) {
     return /* Entier */Block.__(0, [Utils$ReactTemplate.super_int_of_string(chaine)]);
-  } else if (full_test((/[1-9]*[0-9].[0-9]*/), chaine)) {
+  } else if (full_test((/[1-9]*[0-9]\.[0-9]*/), chaine)) {
     return /* Flottant */Block.__(1, [Utils$ReactTemplate.super_float_of_string(chaine)]);
   } else if (chaine === "true" || chaine === "false") {
     return /* Booleen */Block.__(7, [Pervasives.bool_of_string(chaine)]);

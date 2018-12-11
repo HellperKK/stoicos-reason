@@ -9,7 +9,7 @@ var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
 
 var string_mod = ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var chaines = List.map(StdDef$ReactTemplate.to_string, tokens);
-                var chaine = $$String.concat(" ", chaines);
+                var chaine = $$String.concat("", chaines);
                 return /* Chaine */Block.__(3, [chaine]);
               })])]), ImutHash$ReactTemplate.empty);
 
