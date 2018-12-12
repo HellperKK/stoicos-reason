@@ -7,11 +7,23 @@ var $$String = require("bs-platform/lib/js/string.js");
 var StdDef$ReactTemplate = require("./StdDef.bs.js");
 var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
 
-var string_mod = ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
-                var chaines = List.map(StdDef$ReactTemplate.to_string, tokens);
-                var chaine = $$String.concat("", chaines);
-                return /* Chaine */Block.__(3, [chaine]);
-              })])]), ImutHash$ReactTemplate.empty);
+var string_mod = ImutHash$ReactTemplate.add("lowercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var chaine = StdDef$ReactTemplate.to_string(StdDef$ReactTemplate.look_at(tokens, 0));
+                return /* Chaine */Block.__(3, [$$String.lowercase(chaine)]);
+              })])]), ImutHash$ReactTemplate.add("uppercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                    var chaine = StdDef$ReactTemplate.to_string(StdDef$ReactTemplate.look_at(tokens, 0));
+                    return /* Chaine */Block.__(3, [$$String.uppercase(chaine)]);
+                  })])]), ImutHash$ReactTemplate.add("uncapitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                        var chaine = StdDef$ReactTemplate.to_string(StdDef$ReactTemplate.look_at(tokens, 0));
+                        return /* Chaine */Block.__(3, [$$String.uncapitalize(chaine)]);
+                      })])]), ImutHash$ReactTemplate.add("capitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                            var chaine = StdDef$ReactTemplate.to_string(StdDef$ReactTemplate.look_at(tokens, 0));
+                            return /* Chaine */Block.__(3, [$$String.capitalize(chaine)]);
+                          })])]), ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                var chaines = List.map(StdDef$ReactTemplate.to_string, tokens);
+                                var chaine = $$String.concat("", chaines);
+                                return /* Chaine */Block.__(3, [chaine]);
+                              })])]), ImutHash$ReactTemplate.empty)))));
 
 StdDef$ReactTemplate.set_value("String", /* Struct */Block.__(13, [string_mod]));
 
