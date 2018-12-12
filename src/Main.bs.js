@@ -3,12 +3,553 @@
 
 var List = require("bs-platform/lib/js/list.js");
 var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var $$String = require("bs-platform/lib/js/string.js");
+var Hashtbl = require("bs-platform/lib/js/hashtbl.js");
+var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
+var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Utils$ReactTemplate = require("./Utils.bs.js");
-var StringDef$ReactTemplate = require("./StringDef.bs.js");
+var ImutHash$ReactTemplate = require("./ImutHash.bs.js");
+
+var vars = /* record */[/* contents : :: */[
+    Hashtbl.create(undefined, 100),
+    /* [] */0
+  ]];
+
+var sortie = /* record */[/* contents */""];
+
+function get_value(name) {
+  return List.fold_left((function (memo, value) {
+                var match = Hashtbl.mem(value, name) && memo === /* Unit */0;
+                if (match) {
+                  return Hashtbl.find(value, name);
+                } else {
+                  return memo;
+                }
+              }), /* Unit */0, vars[0]);
+}
+
+function set_value(name, value) {
+  var match = vars[0];
+  if (match) {
+    return Hashtbl.replace(match[0], name, value);
+  } else {
+    return /* () */0;
+  }
+}
+
+function add_stack() {
+  var ancien = vars[0];
+  vars[0] = /* :: */[
+    Hashtbl.create(undefined, 100),
+    ancien
+  ];
+  return /* () */0;
+}
+
+function remove_stack() {
+  var match = vars[0];
+  var tmp;
+  if (match) {
+    var tail = match[1];
+    tmp = tail ? tail : /* :: */[
+        match[0],
+        /* [] */0
+      ];
+  } else {
+    tmp = /* [] */0;
+  }
+  vars[0] = tmp;
+  return /* () */0;
+}
+
+function get_stack() {
+  var match = vars[0];
+  if (match) {
+    return match[0];
+  } else {
+    return Hashtbl.create(undefined, 100);
+  }
+}
+
+function get_var(tok) {
+  if (typeof tok === "number") {
+    return tok;
+  } else {
+    switch (tok.tag | 0) {
+      case 5 : 
+          return get_value(tok[0]);
+      case 6 : 
+          var value = get_value(tok[0]);
+          var hash;
+          hash = typeof value === "number" || value.tag !== 13 ? ImutHash$ReactTemplate.empty : value[0];
+          var match = ImutHash$ReactTemplate.find_opt(tok[1], hash);
+          if (match !== undefined) {
+            return match;
+          } else {
+            return /* Unit */0;
+          }
+      default:
+        return tok;
+    }
+  }
+}
+
+function to_int(tok) {
+  if (typeof tok === "number") {
+    return 0;
+  } else {
+    switch (tok.tag | 0) {
+      case 1 : 
+          return tok[0] | 0;
+      case 0 : 
+      case 2 : 
+          return tok[0];
+      case 3 : 
+      case 4 : 
+          return Utils$ReactTemplate.super_int_of_string(tok[0]);
+      default:
+        return 0;
+    }
+  }
+}
+
+function to_float(tok) {
+  if (typeof tok === "number") {
+    return 0.0;
+  } else {
+    switch (tok.tag | 0) {
+      case 1 : 
+          return tok[0];
+      case 0 : 
+      case 2 : 
+          return tok[0];
+      case 3 : 
+      case 4 : 
+          return Utils$ReactTemplate.super_float_of_string(tok[0]);
+      default:
+        return 0.0;
+    }
+  }
+}
+
+function to_char(tok) {
+  if (typeof tok === "number") {
+    return /* " " */32;
+  } else {
+    switch (tok.tag | 0) {
+      case 0 : 
+          return Pervasives.char_of_int(tok[0]);
+      case 1 : 
+          return Pervasives.char_of_int(tok[0] | 0);
+      case 2 : 
+          return tok[0];
+      case 3 : 
+      case 4 : 
+          return Caml_string.get(tok[0], 0);
+      default:
+        return /* " " */32;
+    }
+  }
+}
+
+function to_string(tok) {
+  if (typeof tok === "number") {
+    return "";
+  } else {
+    switch (tok.tag | 0) {
+      case 0 : 
+          return String(tok[0]);
+      case 1 : 
+          return Pervasives.string_of_float(tok[0]);
+      case 2 : 
+          return $$String.make(1, tok[0]);
+      case 3 : 
+      case 4 : 
+          return tok[0];
+      case 7 : 
+          return Pervasives.string_of_bool(tok[0]);
+      default:
+        return "";
+    }
+  }
+}
+
+function to_sym(tok) {
+  if (typeof tok === "number") {
+    return "";
+  } else {
+    switch (tok.tag | 0) {
+      case 0 : 
+          return String(tok[0]);
+      case 1 : 
+          return Pervasives.string_of_float(tok[0]);
+      case 2 : 
+          return $$String.make(1, tok[0]);
+      case 3 : 
+      case 4 : 
+          return tok[0];
+      case 7 : 
+          return Pervasives.string_of_bool(tok[0]);
+      default:
+        return "";
+    }
+  }
+}
+
+function to_bool(tok) {
+  if (typeof tok === "number") {
+    return false;
+  } else if (tok.tag === 7) {
+    return tok[0];
+  } else {
+    return true;
+  }
+}
+
+function to_array(tok) {
+  if (typeof tok === "number" || tok.tag !== 11) {
+    return /* :: */[
+            tok,
+            /* [] */0
+          ];
+  } else {
+    return tok[0];
+  }
+}
+
+function to_block(tok) {
+  if (typeof tok === "number" || tok.tag !== 9) {
+    return /* :: */[
+            tok,
+            /* [] */0
+          ];
+  } else {
+    return tok[0];
+  }
+}
+
+function to_function(tok) {
+  var exit = 0;
+  if (typeof tok === "number" || tok.tag !== 12) {
+    exit = 1;
+  } else {
+    return tok[0];
+  }
+  if (exit === 1) {
+    return /* NativeF */Block.__(0, [(function () {
+                  return /* Unit */0;
+                })]);
+  }
+  
+}
+
+function run(tokens) {
+  if (tokens) {
+    var funcb = to_function(get_var(tokens[0]));
+    var argsb = List.map((function (x) {
+            return get_var(tok_get(x));
+          }), tokens[1]);
+    return run_fun(funcb, argsb);
+  } else {
+    return /* Unit */0;
+  }
+}
+
+function tok_get(token) {
+  if (typeof token === "number") {
+    return token;
+  } else {
+    switch (token.tag | 0) {
+      case 8 : 
+          return run(token[0]);
+      case 10 : 
+          return /* Tableau */Block.__(11, [List.map((function (tok) {
+                            return get_var(tok_get(tok));
+                          }), token[0])]);
+      default:
+        return token;
+    }
+  }
+}
+
+function tok_calc(tokens) {
+  return List.fold_left((function (_, tok) {
+                return tok_get(tok);
+              }), /* Unit */0, tokens);
+}
+
+function run_fun(func, args) {
+  if (func.tag) {
+    var names = func[0];
+    add_stack(/* () */0);
+    var argsb = Utils$ReactTemplate.list_same_size(names, args, /* Unit */0);
+    List.iter2(set_value, names, argsb);
+    var result = tok_calc(func[1]);
+    remove_stack(/* () */0);
+    return result;
+  } else {
+    return Curry._1(func[0], args);
+  }
+}
+
+function look_at(liste, index) {
+  return Utils$ReactTemplate.list_fetch(liste, index, /* Unit */0);
+}
+
+set_value("print", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var chaines = List.map(to_string, tokens);
+                var chaine = $$String.concat(" ", chaines);
+                sortie[0] = sortie[0] + chaine;
+                return /* Chaine */Block.__(3, [chaine]);
+              })])]));
+
+set_value("=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var name = to_sym(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                set_value(name, value);
+                return /* Unit */0;
+              })])]));
+
+set_value("assign", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var noms = List.map(to_sym, to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var value = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                List.iter((function (x) {
+                        return set_value(x, value);
+                      }), noms);
+                return /* Unit */0;
+              })])]));
+
+set_value("bind", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var noms = List.map(to_sym, to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var value = to_array(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                var valueb = Utils$ReactTemplate.list_same_size(noms, value, /* Unit */0);
+                List.iter2(set_value, noms, valueb);
+                return /* Unit */0;
+              })])]));
+
+set_value("==", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_equal(value, valueb)]);
+              })])]));
+
+set_value("!=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_notequal(value, valueb)]);
+              })])]));
+
+set_value(">", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_greaterthan(value, valueb)]);
+              })])]));
+
+set_value(">=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_greaterequal(value, valueb)]);
+              })])]));
+
+set_value("<", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_lessthan(value, valueb)]);
+              })])]));
+
+set_value("<=", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var value = Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0);
+                var valueb = Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0);
+                return /* Booleen */Block.__(7, [Caml_obj.caml_lessequal(value, valueb)]);
+              })])]));
+
+set_value("if", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var bool = to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                var bloc = to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                var blocb = to_block(Utils$ReactTemplate.list_fetch(tokens, 2, /* Unit */0));
+                if (bool) {
+                  return tok_calc(bloc);
+                } else {
+                  return tok_calc(blocb);
+                }
+              })])]));
+
+set_value("cond", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var conds = List.map(to_array, tokens);
+                var elem = Utils$ReactTemplate.list_first((function (x) {
+                        return to_bool(Utils$ReactTemplate.list_fetch(x, 0, /* Unit */0));
+                      }), conds);
+                if (elem !== undefined) {
+                  return Utils$ReactTemplate.list_fetch(elem, 1, /* Unit */0);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("fun", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var args = List.map(to_sym, to_array(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0)));
+                var bloc = to_block(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                return /* Fonction */Block.__(12, [/* CustomF */Block.__(1, [
+                              args,
+                              bloc
+                            ])]);
+              })])]));
+
+set_value("not", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var bool = to_bool(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                return /* Booleen */Block.__(7, [!bool]);
+              })])]));
+
+set_value("or", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          if (prim) {
+                            return true;
+                          } else {
+                            return prim$1;
+                          }
+                        }), to_bool(tokens[0]), List.map(to_bool, tokens[1]));
+                  return /* Booleen */Block.__(7, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("and", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          if (prim) {
+                            return prim$1;
+                          } else {
+                            return false;
+                          }
+                        }), to_bool(tokens[0]), List.map(to_bool, tokens[1]));
+                  return /* Booleen */Block.__(7, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("^", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var chaines = List.map(to_string, tokens);
+                var chaine = $$String.concat("", chaines);
+                return /* Chaine */Block.__(3, [chaine]);
+              })])]));
+
+set_value("+", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var result = List.fold_left((function (prim, prim$1) {
+                        return prim + prim$1 | 0;
+                      }), 0, List.map(to_int, tokens));
+                return /* Entier */Block.__(0, [result]);
+              })])]));
+
+set_value("*", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var result = List.fold_left(Caml_int32.imul, 1, List.map(to_int, tokens));
+                return /* Entier */Block.__(0, [result]);
+              })])]));
+
+set_value("-", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          return prim - prim$1 | 0;
+                        }), to_int(tokens[0]), List.map(to_int, tokens[1]));
+                  return /* Entier */Block.__(0, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("/", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left(Caml_int32.div, to_int(tokens[0]), List.map(to_int, tokens[1]));
+                  return /* Entier */Block.__(0, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("%", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left(Caml_int32.mod_, to_int(tokens[0]), List.map(to_int, tokens[1]));
+                  return /* Entier */Block.__(0, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("+.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var result = List.fold_left((function (prim, prim$1) {
+                        return prim + prim$1;
+                      }), 0, List.map(to_float, tokens));
+                return /* Flottant */Block.__(1, [result]);
+              })])]));
+
+set_value("*.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var result = List.fold_left((function (prim, prim$1) {
+                        return prim * prim$1;
+                      }), 1.0, List.map(to_float, tokens));
+                return /* Flottant */Block.__(1, [result]);
+              })])]));
+
+set_value("-.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          return prim - prim$1;
+                        }), to_float(tokens[0]), List.map(to_float, tokens[1]));
+                  return /* Flottant */Block.__(1, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("/.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          return prim / prim$1;
+                        }), to_float(tokens[0]), List.map(to_float, tokens[1]));
+                  return /* Flottant */Block.__(1, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+set_value("%.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                if (tokens) {
+                  var result = List.fold_left((function (prim, prim$1) {
+                          return prim % prim$1;
+                        }), to_float(tokens[0]), List.map(to_float, tokens[1]));
+                  return /* Flottant */Block.__(1, [result]);
+                } else {
+                  return /* Unit */0;
+                }
+              })])]));
+
+var string_mod = ImutHash$ReactTemplate.add("trim", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                return /* Chaine */Block.__(3, [$$String.trim(chaine)]);
+              })])]), ImutHash$ReactTemplate.add("lowercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                    var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                    return /* Chaine */Block.__(3, [$$String.lowercase(chaine)]);
+                  })])]), ImutHash$ReactTemplate.add("uppercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                        var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                        return /* Chaine */Block.__(3, [$$String.uppercase(chaine)]);
+                      })])]), ImutHash$ReactTemplate.add("uncapitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                            var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                            return /* Chaine */Block.__(3, [$$String.uncapitalize(chaine)]);
+                          })])]), ImutHash$ReactTemplate.add("capitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                                return /* Chaine */Block.__(3, [$$String.capitalize(chaine)]);
+                              })])]), ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                    var chaines = List.map(to_string, tokens);
+                                    var chaine = $$String.concat("", chaines);
+                                    return /* Chaine */Block.__(3, [chaine]);
+                                  })])]), ImutHash$ReactTemplate.empty))))));
+
+set_value("String", /* Struct */Block.__(13, [string_mod]));
 
 function first_char_at(liste, i) {
   return Caml_string.get(List.nth(liste, i), 0);
@@ -217,7 +758,7 @@ function second_cut(liste) {
 }
 
 function interpete(chaine) {
-  StringDef$ReactTemplate.sortie[0] = "";
+  sortie[0] = "";
   if (chaine !== "") {
     var code = List.map((function (x) {
             return List.map(to_token, third_cut(x));
@@ -229,67 +770,21 @@ function interpete(chaine) {
                       }
                     }))(Utils$ReactTemplate.string_split(/* "\n" */10, chaine))));
     List.iter((function (x) {
-            StringDef$ReactTemplate.run(x);
+            run(x);
             return /* () */0;
           }), code);
   }
-  return StringDef$ReactTemplate.sortie[0];
+  return sortie[0];
 }
 
-var vars = StringDef$ReactTemplate.vars;
-
-var get_value = StringDef$ReactTemplate.get_value;
-
-var set_value = StringDef$ReactTemplate.set_value;
-
-var add_stack = StringDef$ReactTemplate.add_stack;
-
-var remove_stack = StringDef$ReactTemplate.remove_stack;
-
-var get_stack = StringDef$ReactTemplate.get_stack;
-
-var get_var = StringDef$ReactTemplate.get_var;
-
-var sortie = StringDef$ReactTemplate.sortie;
-
-var to_int = StringDef$ReactTemplate.to_int;
-
-var to_float = StringDef$ReactTemplate.to_float;
-
-var to_char = StringDef$ReactTemplate.to_char;
-
-var to_string = StringDef$ReactTemplate.to_string;
-
-var to_sym = StringDef$ReactTemplate.to_sym;
-
-var to_bool = StringDef$ReactTemplate.to_bool;
-
-var to_array = StringDef$ReactTemplate.to_array;
-
-var to_block = StringDef$ReactTemplate.to_block;
-
-var to_function = StringDef$ReactTemplate.to_function;
-
-var run = StringDef$ReactTemplate.run;
-
-var tok_get = StringDef$ReactTemplate.tok_get;
-
-var tok_calc = StringDef$ReactTemplate.tok_calc;
-
-var run_fun = StringDef$ReactTemplate.run_fun;
-
-var look_at = StringDef$ReactTemplate.look_at;
-
-var string_mod = StringDef$ReactTemplate.string_mod;
-
 exports.vars = vars;
+exports.sortie = sortie;
 exports.get_value = get_value;
 exports.set_value = set_value;
 exports.add_stack = add_stack;
 exports.remove_stack = remove_stack;
 exports.get_stack = get_stack;
 exports.get_var = get_var;
-exports.sortie = sortie;
 exports.to_int = to_int;
 exports.to_float = to_float;
 exports.to_char = to_char;
@@ -315,4 +810,4 @@ exports.to_token = to_token;
 exports.look_untill = look_untill;
 exports.second_cut = second_cut;
 exports.interpete = interpete;
-/* StringDef-ReactTemplate Not a pure module */
+/* vars Not a pure module */
