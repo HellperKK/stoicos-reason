@@ -23,7 +23,7 @@ var sortie = /* record */[/* contents */""];
 
 function get_value(name) {
   return List.fold_left((function (memo, value) {
-                var match = Hashtbl.mem(value, name) && memo === /* Unit */0;
+                var match = memo === /* Unit */0 && Hashtbl.mem(value, name);
                 if (match) {
                   return Hashtbl.find(value, name);
                 } else {
@@ -528,26 +528,43 @@ set_value("%.", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function 
                 }
               })])]));
 
-var string_mod = ImutHash$ReactTemplate.add("trim", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+var string_mod = ImutHash$ReactTemplate.add("length", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                 var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                return /* Chaine */Block.__(3, [$$String.trim(chaine)]);
-              })])]), ImutHash$ReactTemplate.add("lowercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                return /* Entier */Block.__(0, [chaine.length]);
+              })])]), ImutHash$ReactTemplate.add("get", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                     var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                    return /* Chaine */Block.__(3, [$$String.lowercase(chaine)]);
-                  })])]), ImutHash$ReactTemplate.add("uppercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                    var i = to_int(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                    return /* Carac */Block.__(2, [Caml_string.get(chaine, i)]);
+                  })])]), ImutHash$ReactTemplate.add("sub", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                         var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                        return /* Chaine */Block.__(3, [$$String.uppercase(chaine)]);
-                      })])]), ImutHash$ReactTemplate.add("uncapitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                        var deb = to_int(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                        var len = to_int(Utils$ReactTemplate.list_fetch(tokens, 2, /* Unit */0));
+                        return /* Chaine */Block.__(3, [$$String.sub(chaine, deb, len)]);
+                      })])]), ImutHash$ReactTemplate.add("slice", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                             var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                            return /* Chaine */Block.__(3, [$$String.uncapitalize(chaine)]);
-                          })])]), ImutHash$ReactTemplate.add("capitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                            var deb = to_int(Utils$ReactTemplate.list_fetch(tokens, 1, /* Unit */0));
+                            var fin = to_int(Utils$ReactTemplate.list_fetch(tokens, 2, /* Unit */0));
+                            return /* Chaine */Block.__(3, [Utils$ReactTemplate.string_slice(deb, fin, chaine)]);
+                          })])]), ImutHash$ReactTemplate.add("trim", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
                                 var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
-                                return /* Chaine */Block.__(3, [$$String.capitalize(chaine)]);
-                              })])]), ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
-                                    var chaines = List.map(to_string, tokens);
-                                    var chaine = $$String.concat("", chaines);
-                                    return /* Chaine */Block.__(3, [chaine]);
-                                  })])]), ImutHash$ReactTemplate.empty))))));
+                                return /* Chaine */Block.__(3, [$$String.trim(chaine)]);
+                              })])]), ImutHash$ReactTemplate.add("lowercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                    var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                                    return /* Chaine */Block.__(3, [$$String.lowercase(chaine)]);
+                                  })])]), ImutHash$ReactTemplate.add("uppercase", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                        var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                                        return /* Chaine */Block.__(3, [$$String.uppercase(chaine)]);
+                                      })])]), ImutHash$ReactTemplate.add("uncapitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                            var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                                            return /* Chaine */Block.__(3, [$$String.uncapitalize(chaine)]);
+                                          })])]), ImutHash$ReactTemplate.add("capitalize", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                                var chaine = to_string(Utils$ReactTemplate.list_fetch(tokens, 0, /* Unit */0));
+                                                return /* Chaine */Block.__(3, [$$String.capitalize(chaine)]);
+                                              })])]), ImutHash$ReactTemplate.add("concat", /* Fonction */Block.__(12, [/* NativeF */Block.__(0, [(function (tokens) {
+                                                    var chaines = List.map(to_string, tokens);
+                                                    var chaine = $$String.concat("", chaines);
+                                                    return /* Chaine */Block.__(3, [chaine]);
+                                                  })])]), ImutHash$ReactTemplate.empty))))))))));
 
 set_value("String", /* Struct */Block.__(13, [string_mod]));
 

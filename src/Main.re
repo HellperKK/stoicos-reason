@@ -32,7 +32,7 @@ let sortie = ref("");
 /* get a variable value */
 let get_value = name => {
   List.fold_left((memo, value) => {
-    Hashtbl.mem(value, name) && memo == Unit ? Hashtbl.find(value, name) : memo
+    memo == Unit && Hashtbl.mem(value, name) ? Hashtbl.find(value, name) : memo
   }, Unit, vars^)
 };
 
@@ -197,7 +197,6 @@ and run_fun = (func, args) => switch(func){
 
 
 /* part dedicated to the base functions */
-
 let look_at = (liste, index) => Utils.list_fetch(liste, index, Unit)
 
 /* fonctions IO */
@@ -399,7 +398,6 @@ set_value("%.", Fonction(NativeF(tokens => switch(tokens){
 
 
 /* part dedicated to the string module definition */
-
 let string_mod:ImutHash.t(string, token) = ImutHash.empty
   |> ImutHash.add("concat", Fonction(NativeF(tokens => {
     let chaines = List.map(to_string, tokens);
@@ -425,11 +423,29 @@ let string_mod:ImutHash.t(string, token) = ImutHash.empty
   |> ImutHash.add("trim", Fonction(NativeF(tokens => {
     let chaine = look_at(tokens, 0) |> to_string;
     Chaine(String.trim(chaine));
+  })))
+  |> ImutHash.add("slice", Fonction(NativeF(tokens => {
+    let chaine = look_at(tokens, 0) |> to_string;
+    let deb = look_at(tokens, 1) |> to_int;
+    let fin = look_at(tokens, 2) |> to_int;
+    Chaine(Utils.string_slice(deb, fin, chaine));
+  })))
+  |> ImutHash.add("sub", Fonction(NativeF(tokens => {
+    let chaine = look_at(tokens, 0) |> to_string;
+    let deb = look_at(tokens, 1) |> to_int;
+    let len = look_at(tokens, 2) |> to_int;
+    Chaine(String.sub(chaine, deb, len));
+  })))
+  |> ImutHash.add("get", Fonction(NativeF(tokens => {
+    let chaine = look_at(tokens, 0) |> to_string;
+    let i = look_at(tokens, 1) |> to_int;
+    Carac(chaine.[i]);
+  })))
+  |> ImutHash.add("length", Fonction(NativeF(tokens => {
+    let chaine = look_at(tokens, 0) |> to_string;
+    Entier(String.length(chaine));
   })));
-
 set_value("String", Struct(string_mod));
-
-
 
 /* part dedicated to file lexing and global execution
 of the code */

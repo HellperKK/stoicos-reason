@@ -61,7 +61,7 @@ let values = hash => {
 
 let iter = (fn, hash) => {
   fold_left((), (_, k, v) => fn(k, v), hash);
-}
+};
 
 let test = () => {
   let test_val:t(string, int) = empty
@@ -77,4 +77,4 @@ let test = () => {
   Js.log(values(test_val));
   Js.log(mem("hello", test_val));
   Js.log(mem("hellos", test_val));
-}
+};
