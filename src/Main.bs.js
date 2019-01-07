@@ -202,7 +202,11 @@ function to_sym(tok) {
 
 function to_bool(tok) {
   if (typeof tok === "number") {
-    return false;
+    if (tok === 0) {
+      return false;
+    } else {
+      return true;
+    }
   } else if (tok.tag === 7) {
     return tok[0];
   } else {
