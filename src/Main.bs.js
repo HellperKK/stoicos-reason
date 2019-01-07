@@ -23,7 +23,7 @@ var sortie = /* record */[/* contents */""];
 
 function get_value(name) {
   var value = List.fold_left((function (memo, value) {
-          var match = memo === /* Unit */0 && Hashtbl.mem(value, name);
+          var match = memo === /* Undef */1 && Hashtbl.mem(value, name);
           if (match) {
             return Hashtbl.find(value, name);
           } else {

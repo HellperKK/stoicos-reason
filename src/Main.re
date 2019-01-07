@@ -33,7 +33,7 @@ let sortie = ref("");
 /* get a variable value */
 let get_value = name => {
   let value = List.fold_left((memo, value) => {
-    memo == Unit && Hashtbl.mem(value, name) ? Hashtbl.find(value, name) : memo
+    memo == Undef && Hashtbl.mem(value, name) ? Hashtbl.find(value, name) : memo
   }, Undef, vars^);
   value == Undef ? Unit : value;
 };
