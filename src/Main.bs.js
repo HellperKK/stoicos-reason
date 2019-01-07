@@ -22,14 +22,20 @@ var vars = /* record */[/* contents : :: */[
 var sortie = /* record */[/* contents */""];
 
 function get_value(name) {
-  return List.fold_left((function (memo, value) {
-                var match = memo === /* Unit */0 && Hashtbl.mem(value, name);
-                if (match) {
-                  return Hashtbl.find(value, name);
-                } else {
-                  return memo;
-                }
-              }), /* Unit */0, vars[0]);
+  var value = List.fold_left((function (memo, value) {
+          var match = memo === /* Unit */0 && Hashtbl.mem(value, name);
+          if (match) {
+            return Hashtbl.find(value, name);
+          } else {
+            return memo;
+          }
+        }), /* Undef */1, vars[0]);
+  var match = value === /* Undef */1;
+  if (match) {
+    return /* Unit */0;
+  } else {
+    return value;
+  }
 }
 
 function set_value(name, value) {

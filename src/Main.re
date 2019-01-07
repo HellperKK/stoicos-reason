@@ -17,7 +17,7 @@ type token =
   |Fonction(fonction)
   |Struct(ImutHash.t(string, token))
   |Unit
-  |Undefined
+  |Undef
 
 /* represent subtokens for functions */
 and fonction =
@@ -32,10 +32,10 @@ let sortie = ref("");
 
 /* get a variable value */
 let get_value = name => {
-  List.fold_left((memo, value) => {
-    let value = memo == Unit && Hashtbl.mem(value, name) ? Hashtbl.find(value, name) : memo
-  }, Undefined, vars^);
-  value == Undefined ? Unit : value;
+  let value = List.fold_left((memo, value) => {
+    memo == Unit && Hashtbl.mem(value, name) ? Hashtbl.find(value, name) : memo
+  }, Undef, vars^);
+  value == Undef ? Unit : value;
 };
 
 /* set a variable value */
